@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Map</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
         /* Impostazione della dimensione della mappa */
         #map {
@@ -15,30 +16,11 @@
 <body>
 <h1>Mappa di Google</h1>
 
-<!-- Contenitore per la mappa -->
 <div id="map"></div>
 
 <!-- Script di Google Maps con la tua API Key -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArFnhDZO3GD6sso3cs1jkSX5FQMCXO7fg&callback=initMap" async defer></script>
 
-<script>
-    // Funzione di inizializzazione della mappa
-    function initMap() {
-        // Centra la mappa su Roma, con un livello di zoom di 12
-        var roma = { lat: 41.9028, lng: 12.4964 };
-
-        // Crea la mappa
-        var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 12,
-            center: roma
-        });
-
-        // Aggiungi un marker
-        var marker = new google.maps.Marker({
-            position: roma,
-            map: map
-        });
-    }
-</script>
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
 </body>
 </html>
