@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_pymongo import PyMongo
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -44,6 +45,14 @@ def logout():
     session.pop('username', None)  # Rimuovi l'utente dalla sessione
     flash('Logout effettuato con successo.', 'info')
     return redirect(url_for('login'))
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+@app.route('/')
+def home():
+    return render_template('map.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

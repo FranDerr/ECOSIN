@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Map</title>
+    <style>
+        /* Impostazione della dimensione della mappa */
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<h1>Mappa di Google</h1>
+
+<!-- Contenitore per la mappa -->
+<div id="map"></div>
+
+<!-- Script di Google Maps con la tua API Key -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+
+<script>
+    // Funzione di inizializzazione della mappa
+    function initMap() {
+        // Centra la mappa su Roma, con un livello di zoom di 12
+        var roma = { lat: 41.9028, lng: 12.4964 };
+
+        // Crea la mappa
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: roma
+        });
+
+        // Aggiungi un marker
+        var marker = new google.maps.Marker({
+            position: roma,
+            map: map
+        });
+    }
+</script>
+</body>
+</html>
