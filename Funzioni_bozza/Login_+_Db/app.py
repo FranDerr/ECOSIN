@@ -50,5 +50,22 @@ def logout():
     flash('Logout effettuato con successo.', 'info')
     return redirect(url_for('login'))
 
+# Pagina di dettaglio per un singolo dispositivo
+@app.route("/product/<int:product_id>")
+def product(product_id):
+    prodotto = mongo.db.devices.find_one({"_id": product_id})
+    if prodotto:
+        return render_template("product.html", prodotto=prodotto)
+    else:
+        return "Dispositivo non trovato", 404
+
+# API per fornire i dati dei dispositivi
+@app.route("/api/devices")
+def api_devices():
+    devices = list(mongo.db.devices.find({}, {"_id": 1, "nome": 1, "lat": 1, "lng": 1, "stato": 1}))
+    for device in devices:
+        device["_id"] = int(device["_id"])
+    return {"devices": devices}
+
 if __name__ == '__main__':
     app.run(debug=True)

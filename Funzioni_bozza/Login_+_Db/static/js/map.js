@@ -1,14 +1,40 @@
-// Funzione di inizializzazione della mappa
 function initMap() {
-    var roma = { lat: 41.9028, lng: 12.4964 };  // Roma
+    const frattamaggiore = { lat: 40.9403, lng: 14.2907 };
 
-    var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 12,
-        center: roma
+    const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 14,
+        center: frattamaggiore,
     });
 
-    var marker = new google.maps.Marker({
-        position: roma,
-        map: map
-    });
+    // Carica i dispositivi tramite API
+    fetch('/api/devices')
+        .then(response => response.json())
+        .then(data => {
+            data.devices.forEach(device => {
+                const marker = new google.maps.Marker({
+                    position: { lat: device.lat, lng: device.lng },
+                    map: map,
+                    title: device.nome,
+                });
+
+                // Contenuto della finestra
+                const infoContent = `
+          <div>
+            <h3>${device.nome}</h3>
+            <p>Stato: ${device.stato}</p>
+            <button onclick="location.href='/product/${device._id}';" style="padding: 5px 10px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
+              Vedi Altro
+            </button>
+          </div>
+        `;
+
+                const infoWindow = new google.maps.InfoWindow({
+                    content: infoContent,
+                });
+
+                marker.addListener("click", () => {
+                    infoWindow.open(map, marker);
+                });
+            });
+        });
 }

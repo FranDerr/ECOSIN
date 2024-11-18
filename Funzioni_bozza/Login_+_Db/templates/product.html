@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dettaglio Prodotto</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<h1>Dettaglio Dispositivo</h1>
+<div>
+    <h2>{{ prodotto['nome'] }}</h2>
+    <p><strong>Posizione:</strong> {{ prodotto['posizione'] }}</p>
+    <p><strong>Stato:</strong> {{ prodotto['stato'] }}</p>
+    <p><strong>Riempimento:</strong> {{ prodotto['riempimento'] }}</p>
+    <p><strong>Descrizione:</strong> {{ prodotto['descrizione'] }}</p>
+    <a href="/map">Torna alla mappa</a>
+</div>
+</body>
+</html>

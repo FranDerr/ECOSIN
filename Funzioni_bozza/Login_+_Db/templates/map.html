@@ -1,26 +1,77 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Map</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Google Maps - Ecosin</title>
     <style>
-        /* Impostazione della dimensione della mappa */
+        /* Stile per rendere la mappa a schermo intero */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
         #map {
-            height: 500px;
+            height: 100%;
             width: 100%;
         }
     </style>
 </head>
 <body>
-<h1>Mappa di Google</h1>
-
 <div id="map"></div>
+<script>
+    let map; // La mappa
+    let currentInfoWindow = null; // Per tenere traccia dell'info window aperta
 
-<!-- Script di Google Maps con la tua API Key -->
+    function initMap() {
+        // Inizializza la mappa centrata su Frattamaggiore
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: 40.9403, lng: 14.2907 }, // Latitudine e longitudine di Frattamaggiore
+            zoom: 14, // Livello di zoom
+        });
+
+        // Carica i dati dei dispositivi dal server
+        fetch('/api/devices')
+            .then(response => response.json())
+            .then(data => {
+                data.devices.forEach(device => {
+                    // Aggiungi un marker per ogni dispositivo
+                    const marker = new google.maps.Marker({
+                        position: { lat: device.lat, lng: device.lng },
+                        map: map,
+                        title: device.nome,
+                    });
+
+                    // Crea un'info window per ogni marker
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: `
+                                <div>
+                                    <h3>${device.nome}</h3>
+                                    <p><b>Stato:</b> ${device.stato}</p>
+                                    <button onclick="window.location.href='/product/${device._id}'">Vedi Altro</button>
+                                </div>
+                            `
+                    });
+
+                    // Mostra l'info window al click del marker
+                    marker.addListener("click", () => {
+                        // Chiudi l'info window aperta (se c'è)
+                        if (currentInfoWindow) {
+                            currentInfoWindow.close();
+                        }
+                        // Mostra la nuova info window
+                        infoWindow.open(map, marker);
+                        currentInfoWindow = infoWindow; // Aggiorna la finestra corrente
+                    });
+                });
+            })
+            .catch(error => {
+                console.error("Errore nel caricamento dei dispositivi:", error);
+                alert("Impossibile caricare i dispositivi. Riprova più tardi.");
+            });
+    }
+</script>
+<!-- Inclusione del JavaScript API di Google Maps -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArFnhDZO3GD6sso3cs1jkSX5FQMCXO7fg&callback=initMap" async defer></script>
-
-<script src="{{ url_for('static', filename='js/map.js') }}"></script>
 </body>
 </html>
