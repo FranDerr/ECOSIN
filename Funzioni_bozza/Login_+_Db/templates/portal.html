@@ -4,16 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+<h1>Benvenuto nel Portale</h1>
+<a href="/map">Vai alla Mappa</a>
 
-<h1>Benvenuto al Portal</h1>
-<p>Ciao, {{ username }}! Sei connesso.</p>
-
-<a href="{{ url_for('map_page') }}" class="button">Vai alla Mappa</a>
-<br>
-<a href="{{ url_for('logout') }}" class="button">Logout</a>
 
 </body>
 </html>

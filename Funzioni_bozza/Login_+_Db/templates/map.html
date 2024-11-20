@@ -19,6 +19,7 @@
 </head>
 <body>
 <div id="map"></div>
+
 <script>
     let map; // La mappa
     let currentInfoWindow = null; // Per tenere traccia dell'info window aperta
@@ -26,8 +27,8 @@
     function initMap() {
         // Inizializza la mappa centrata su Frattamaggiore
         map = new google.maps.Map(document.getElementById("map"), {
-            center: { lat: 40.9403, lng: 14.2907 }, // Latitudine e longitudine di Frattamaggiore
-            zoom: 14, // Livello di zoom
+            center: { lat: 40.941852, lng: 14.272456 }, // Latitudine e longitudine di Frattamaggiore
+            zoom: 15, // Livello di zoom
         });
 
         // Carica i dati dei dispositivi dal server
@@ -40,17 +41,28 @@
                         position: { lat: device.lat, lng: device.lng },
                         map: map,
                         title: device.nome,
+                        icon: {
+                            url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png", // Colore del marker (puoi cambiare "green-dot" con "red-dot", "blue-dot", etc.)
+                            scaledSize: new google.maps.Size(40, 40), // Imposta la dimensione dell'icona
+                        }
+
                     });
 
                     // Crea un'info window per ogni marker
                     const infoWindow = new google.maps.InfoWindow({
                         content: `
-                                <div>
-                                    <h3>${device.nome}</h3>
-                                    <p><b>Stato:</b> ${device.stato}</p>
-                                    <button onclick="window.location.href='/product/${device._id}'">Vedi Altro</button>
-                                </div>
-                            `
+                            <div>
+                                <h3>${device.nome}</h3>
+                                <p><b>Descrizione Ente:</b> ${device.descrizione_ente}</p>
+                                <p><b>Stato Bidoni:</b></p>
+                                <ul>
+                                    <li><b>Plastica Bidone:</b> ${device.stato.PLASTICA_BIDONE}</li>
+                                    <li><b>Vetro Bidone:</b> ${device.stato.VETRO_BIDONE}</li>
+                                    <li><b>Carta Bidone:</b> ${device.stato.CARTA_BIDONE}</li>
+                                </ul>
+                                <button onclick="window.location.href='/product/${device._id}'">Vedi Altro</button>
+                            </div>
+                        `
                     });
 
                     // Mostra l'info window al click del marker
@@ -71,6 +83,7 @@
             });
     }
 </script>
+
 <!-- Inclusione del JavaScript API di Google Maps -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArFnhDZO3GD6sso3cs1jkSX5FQMCXO7fg&callback=initMap" async defer></script>
 </body>

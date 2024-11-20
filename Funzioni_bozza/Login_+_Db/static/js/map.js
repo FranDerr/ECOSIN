@@ -1,21 +1,3 @@
-function initMap() {
-    const frattamaggiore = { lat: 40.9403, lng: 14.2907 };
-
-    const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 14,
-        center: frattamaggiore,
-    });
-
-    // Carica i dispositivi tramite API
-    fetch('/api/devices')
-        .then(response => response.json())
-        .then(data => {
-            data.devices.forEach(device => {
-                const marker = new google.maps.Marker({
-                    position: { lat: device.lat, lng: device.lng },
-                    map: map,
-                    title: device.nome,
-                });
 
                 // Contenuto della finestra
                 const infoContent = `
@@ -35,6 +17,13 @@ function initMap() {
                 marker.addListener("click", () => {
                     infoWindow.open(map, marker);
                 });
-            });
-        });
+
+
+
+
+// Funzione per alternare la visibilità della password (se utilizzata)
+function togglePassword() {
+    const passwordInput = document.getElementById("password");
+    const passwordType = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+    passwordInput.setAttribute("type", passwordType);
 }
