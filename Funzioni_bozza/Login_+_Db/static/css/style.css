@@ -12,7 +12,7 @@ body {
 }
 
 /* Adattamento della dimensione dell'immagine di sfondo per il login */
-body#login-body {
+body#login-body-com {
     background-image: url('../image/comune.webp');
     background-size: cover;  /* Adatta l'immagine al contenitore */
     background-position: center;  /* Centra l'immagine */
@@ -29,7 +29,7 @@ body#login-body {
     height: 500px;
 }
 
-.login-container {
+.login-container-com {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,7 +37,7 @@ body#login-body {
     height: 100%;
 }
 
-.login-box {
+.login-box-com {
     background: rgba(255, 255, 255, 0.9);
     padding: 20px 30px;
     border-radius: 8px;
@@ -45,17 +45,17 @@ body#login-body {
     text-align: center;
 }
 
-.login-box h2 {
+.login-box-com h2 {
     margin-bottom: 20px;
     color: #333;
 }
 
-.input-group {
+.input-group-com {
     margin-bottom: 15px;
     position: relative;
 }
 
-.input-group input {
+.input-group-com input {
     width: 100%;
     padding: 10px;
     font-size: 16px;
@@ -64,17 +64,17 @@ body#login-body {
     box-sizing: border-box;
 }
 
-.password-group {
+.password-group-com {
     display: flex;
     align-items: center;
     position: relative;
 }
 
-.password-group input {
+.password-group-com input {
     padding-right: 35px;
 }
 
-.toggle-password {
+.toggle-password-com {
     position: absolute;
     right: 10px;
     cursor: pointer;
@@ -83,7 +83,7 @@ body#login-body {
     user-select: none;
 }
 
-button {
+button#com {
     width: 100%;
     padding: 10px;
     background-color: #5a67d8;
@@ -95,28 +95,28 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
+button#com:hover {
     background-color: #434fa2;
 }
 
-.flash-messages {
+.flash-messages-com {
     margin-bottom: 20px;
     text-align: center;
 }
 
-.flash {
+.flash-com {
     padding: 10px;
     margin: 10px 0;
     border-radius: 5px;
 }
 
-.flash.info {
+.flash.info-com {
     background-color: #d1ecf1;
     color: #0c5460;
     border: 1px solid #bee5eb;
 }
 
-.flash.error {
+.flash.error-com {
     background-color: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;
