@@ -8,7 +8,6 @@
     <noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
 
     <style>
-        /* Sfondo della pagina */
         body {
             background-image: url('../assets/css/images/comune.webp'); /* Sfondo comune per tutta la pagina */
             background-size: cover;
@@ -40,12 +39,29 @@
             border: none;
             border-radius: 15px;
             cursor: pointer;
-            transition: transform 0.3s ease-in-out;
+            transition: background-size 0.3s ease-in-out; /* Transizione per la dimensione dello sfondo */
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Aggiungi ombra al bottone */
         }
 
-        /* Effetto hover: ingrandisce il bottone quando il mouse è sopra */
+        /* Cambia il colore di sfondo per ogni bottone individualmente, puoi sostituire le URL con quelle che desideri */
+        .button.mappa {
+            background-image: url('../assets/css/images/inserimento.jpeg');
+        }
+
+        .button.comunicazioni {
+            background-image: url('../assets/css/images/inserimento.jpeg');
+        }
+
+        .button.manutenzioni {
+            background-image: url('../assets/css/images/inserimento.jpeg');
+        }
+
+        .button.archivio {
+            background-image: url('../assets/css/images/inserimento.jpeg');
+        }
+        /* Effetto hover: ingrandisce il bottone e gestisce lo sfondo */
         .button:hover {
-            transform: scale(1.05);
+            background-size: 110%; /* Aumenta la dimensione dello sfondo per dare un effetto di zoom */
         }
 
         /* Testo sopra il bottone */
@@ -80,6 +96,7 @@
                 font-size: 18px; /* Riduce ulteriormente la dimensione del testo */
             }
         }
+
     </style>
 
 
@@ -88,16 +105,16 @@
 
 <!-- Sezione con i bottoni -->
 <div class="button-container">
-    <a href="{{ url_for('map_page') }}" class="button" style="background-image: url('../images/inserimento.jpeg');">
+    <a href="{{ url_for('map_page') }}" class="button mappa");>
         <span class="button-text">Mappa</span>
     </a>
-    <a href="{{ url_for('communication_page') }}" class="button" style="background-image: url('../images/inserimento.jpeg');">
+    <a href="{{ url_for('communication_page') }}" class="button comunicazioni" );>
         <span class="button-text">Comunicazioni</span>
     </a>
-    <a href="{{ url_for('maintenance_page') }}" class="button" style="background-image: url('../images/inserimento.jpeg');">
+    <a href="{{ url_for('maintenance_page') }}" class="button manutenzioni" );>
         <span class="button-text">Manutenzioni</span>
     </a>
-    <a href="{{ url_for('archive_page') }}" class="button" style="background-image: url('../images/inserimento.jpeg');">
+    <a href="{{ url_for('archive_page') }}" class="button archivio" );>
         <span class="button-text">Archivio</span>
     </a>
 </div>

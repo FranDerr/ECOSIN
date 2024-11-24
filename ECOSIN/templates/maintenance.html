@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione Manutenzioni</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            justify-content: space-between;
+        }
+
+        .main-container {
+            width: 65%;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-left: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-section {
+            margin-bottom: 20px;
+        }
+
+        .form-section label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-section select,
+        .form-section input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .sidebar {
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-left: 20px;
+        }
+
+        .button-container {
+            display: grid;
+            grid-template-columns: 1fr; /* 1 bottone per riga */
+            gap: 20px;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .button {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-size 0.3s ease-in-out;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .button.mappa {
+            background-image: url('../assets/css/images/inserimento.jpeg');
+        }
+
+        .button.comunicazioni {
+            background-image: url('../assets/css/images/inserimento.jpeg');
+        }
+
+        .button:hover {
+            background-size: 110%;
+        }
+
+        .button-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .button {
+                height: 150px;
+            }
+
+            .button-text {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .button {
+                height: 120px;
+            }
+
+            .button-text {
+                font-size: 18px;
+            }
+        }
+
+        .form-section button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .form-section button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="main-container">
+        <h1>Gestione Manutenzioni</h1>
+
+        <!-- Selezione Ente -->
+        <div class="form-section">
+            <label for="ente">Seleziona Ente</label>
+            <select id="ente" name="ente">
+                <option value="" disabled selected>Seleziona un ente...</option>
+                {% for ente in enti %}
+                <option value="{{ ente['id_ente'] }}">{{ ente['nome_d'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-section">
+            <label for="azione">Seleziona Azione</label>
+            <select id="azione">
+                <option value="" disabled selected>Scegli tra Manutenzione e Ritiro...</option>
+                <option value="manutenzione">Manutenzione</option>
+                <option value="ritiro">Ritiro</option>
+            </select>
+        </div>
+
+        <div class="form-section">
+            <label for="data">Inserisci Data</label>
+            <input type="date" id="data">
+        </div>
+
+        <div class="form-section">
+            <button id="invia">Invia</button>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="button-container">
+            <!-- Collegamento alla pagina manutenzioni da fare -->
+            <a href="{{ url_for('maintenance_todo') }}" class="button mappa">
+                <span class="button-text">Manutenzioni da fare</span>
+            </a>
+            <!-- Collegamento alla pagina ritiri da fare (corretto nome del file) -->
+            <a href="{{ url_for('withdrawals_todo') }}" class="button comunicazioni">
+                <span class="button-text">Ritiri da fare</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('invia').addEventListener('click', function () {
+        const ente = document.getElementById('ente').value;
+        const azione = document.getElementById('azione').value;
+        const data = document.getElementById('data').value;
+
+        if (!ente || !azione || !data) {
+            alert("Per favore, compila tutti i campi e seleziona un'azione.");
+            return;
+        }
+
+        console.log("Dati inviati:", { ente, azione, data });
+        alert(`Operazione di ${azione} registrata con successo!`);
+    });
+
+    // Imposta la data di domani come minimo per il campo data
+    const oggi = new Date();
+    oggi.setDate(oggi.getDate() + 1);  // Aggiungi 1 giorno
+    const giornoDomani = oggi.toISOString().split('T')[0]; // Ottieni la data in formato YYYY-MM-DD
+    document.getElementById('data').setAttribute('min', giornoDomani);
+
+    // Aggiungi un listener per la validazione al submit del form
+    document.getElementById('manutenzioneForm').addEventListener('submit', function(event) {
+        const dataInput = document.getElementById('data').value;
+        if (new Date(dataInput) < new Date(giornoDomani)) {
+            alert('La data deve essere maggiore o uguale a domani.');
+            event.preventDefault(); // Impedisce l'invio del form
+        }
+    });
+</script>
+</body>
+</html>

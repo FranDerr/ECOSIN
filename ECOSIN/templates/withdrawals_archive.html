@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <title>ECOSIN - Archivio Manutenzioni</title>
+    <title>ECOSIN - Archivio Ritiri</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="../assets/css/main.css" />
@@ -75,27 +75,26 @@
     </style>
 </head>
 <body>
-<h1>Archivio Manutenzioni</h1>
+<h1>Archivio Ritiri</h1>
 <table>
     <thead>
     <tr>
-        <th>Codice Manutenzione</th>
+        <th>Codice Ritiro</th>
         <th>Data</th>
         <th>Responsabile</th>
         <th>Ente</th>
     </tr>
     </thead>
     <tbody>
-    {% for maint in maintenances %}
+    {% for ritiro in withdrawals %}
     <tr>
-        <td>{{ maint['cod_man'] }}</td>
-        <td>{{ maint['data_man'] }}</td>
-        <td>{{ maint['manutentore_nome'] }} {{ maint['manutentore_cognome'] }}</td>
-        <td>{{ maint['ente_nome'] }}</td>
+        <td>{{ ritiro['cod_r'] }}</td>
+        <td>{{ ritiro['data_r'] }}</td>
+        <td>{{ ritiro['manutentore_nome'] }} {{ ritiro['manutentore_cognome'] }}</td>
+        <td>{{ ritiro['ente_nome'] }}</td>
     </tr>
     {% endfor %}
     </tbody>
-
 </table>
 
 <!-- Scripts -->

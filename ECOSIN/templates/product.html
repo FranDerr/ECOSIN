@@ -1,16 +1,137 @@
-<html>
+<html lang="it">
 <head>
     <title>ECOSIN</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>Dettagli Dispositivo - {{ device.id_eco }}</title>
     <link rel="stylesheet" href="../assets/css/main.css" />
     <noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
 </head>
 <body>
-<h1>Dettagli Prodotto</h1>
-<p>Nome: {{ prodotto.nome }}</p>
-<p>Posizione: {{ prodotto.posizione }}</p>
-<a href="/map">Torna alla mappa</a>
+<div class="product-container">
+    <h1>Dettagli Dispositivo: {{ device.id_eco }}</h1>
+
+    <!-- Dettagli Ente -->
+    <div class="section">
+        <h3>Informazioni sull'Ente</h3>
+        <p><b>Ente:</b> {{ ente.nome_d }}</p>
+        <p><b>Indirizzo:</b> {{ ente.via }}</p>
+        <p><b>Email Responsabile:</b> {{ ente.email_dir }}</p>
+    </div>
+
+    <!-- Stato Bidone -->
+    <div class="section">
+        <h2>Stato Bidone</h2>
+        <ul id="stato-bidone-list">
+            <!-- I dati verranno caricati qui dinamicamente -->
+        </ul>
+    </div>
+
+    <!-- Stato Scatola -->
+    <div class="section">
+        <h2>Stato Scatola</h2>
+        <ul id="stato-scatola-list">
+            <!-- I dati verranno caricati qui dinamicamente -->
+        </ul>
+    </div>
+
+    <!-- Manutenzione -->
+    <div class="section">
+        <h2>Manutenzione</h2>
+        <p><b>Ultima manutenzione:</b> {{ ultima_manutenzione.data_man if ultima_manutenzione else 'Non disponibile' }}</p>
+        <p><b>Prossima manutenzione (prevista tra 30 giorni):</b> {{ prossima_manutenzione }}</p>
+        <button onclick="manutenzione('{{ device.id_eco }}')">Avvia Manutenzione</button>
+    </div>
+</div>
+
+<script>
+    // Ottieni l'ID del dispositivo dalla variabile (può essere passato dal template o dalla URL)
+    const idEco = '{{ device.id_eco }}';  // Esempio, id_eco passato dal template
+
+    // Funzione per ottenere e aggiornare le percentuali
+    function aggiornaPercentuali() {
+        fetch(`/product/percentuali/${idEco}`)  // Passa l'id_eco per ottenere i dati specifici
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Dispositivo non trovato');
+                    return;
+                }
+
+                // Vuoto le liste esistenti
+                const bidoneList = document.getElementById('stato-bidone-list');
+                const scatolaList = document.getElementById('stato-scatola-list');
+                bidoneList.innerHTML = '';
+                scatolaList.innerHTML = '';
+
+                // Stato Bidone con il bottone "Sminuzza"
+                bidoneList.innerHTML += `
+                    <li>
+                        <b>Plastica:</b> <span>${data.plastica_bidone}%</span>
+                        <button onclick="sminuzza('plastica', '${idEco}')" ${data.plastica_bidone < 80 ? 'disabled' : ''}>Sminuzza</button>
+                    </li>
+                    <li>
+                        <b>Vetro:</b> <span>${data.vetro_bidone}%</span>
+                        <button onclick="sminuzza('vetro', '${idEco}')" ${data.vetro_bidone < 80 ? 'disabled' : ''}>Sminuzza</button>
+                    </li>
+                    <li>
+                        <b>Carta:</b> <span>${data.carta_bidone}%</span>
+                        <button onclick="sminuzza('carta', '${idEco}')" ${data.carta_bidone < 80 ? 'disabled' : ''}>Sminuzza</button>
+                    </li>
+                `;
+
+                // Stato Scatola con il bottone "Avvia Ritiro"
+                scatolaList.innerHTML += `
+                    <li>
+                        <b>Plastica:</b> <span>${data.plastica_scatola}%</span>
+                        <button onclick="avviaRitiro('plastica', '${idEco}')" ${data.plastica_scatola < 90 ? 'disabled' : ''}>Avvia Ritiro</button>
+                    </li>
+                    <li>
+                        <b>Vetro:</b> <span>${data.vetro_scatola}%</span>
+                        <button onclick="avviaRitiro('vetro', '${idEco}')" ${data.vetro_scatola < 90 ? 'disabled' : ''}>Avvia Ritiro</button>
+                    </li>
+                    <li>
+                        <b>Carta:</b> <span>${data.carta_scatola}%</span>
+                        <button onclick="avviaRitiro('carta', '${idEco}')" ${data.carta_scatola < 90 ? 'disabled' : ''}>Avvia Ritiro</button>
+                    </li>
+                `;
+            })
+            .catch(error => {
+                console.error('Errore durante il caricamento delle percentuali:', error);
+            });
+    }
+
+    // Funzione per il bottone "Sminuzza"
+    function sminuzza(tipo, idEco) {
+        console.log(`Sminuzzamento del tipo ${tipo} per il dispositivo ${idEco}`);
+
+        // Esegui la logica per sminuzzare
+        fetch(`/product/sminuzza/${idEco}/${tipo}`, {method: 'POST'})
+            .then(response => response.json())
+            .then(data => {
+                alert(`Sminuzzamento completato per ${tipo}`);
+                aggiornaPercentuali();  // Ricarica i dati
+            })
+            .catch(error => console.error('Errore durante lo sminuzzamento:', error));
+    }
+
+    // Funzione per il bottone "Avvia Ritiro"
+    function avviaRitiro(tipo, idEco) {
+        console.log(`Avvio ritiro del tipo ${tipo} per il dispositivo ${idEco}`);
+
+        // Avvia il ritiro (per ora non fa nulla)
+        // Puoi implementare questa logica successivamente
+
+        alert(`Ritiro avviato per ${tipo}`);
+    }
+
+    // Esegui l'aggiornamento delle percentuali quando la pagina viene caricata
+    window.onload = aggiornaPercentuali;
+
+    // Esegui l'aggiornamento delle percentuali ogni 2 minuti (120000ms)
+    setInterval(aggiornaPercentuali, 120000);  // 120000 ms = 2 minuti
+</script>
+
 <!-- Scripts -->
 <script src="../assets/js/jquery.min.js"></script>
 <script src="../assets/js/jquery.dropotron.min.js"></script>
@@ -22,3 +143,6 @@
 <script src="../assets/js/main.js"></script>
 </body>
 </html>
+
+
+

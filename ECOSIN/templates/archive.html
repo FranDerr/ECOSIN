@@ -1,0 +1,127 @@
+<html lang="it">
+<head>
+    <title>ECOSIN - Archivio</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+
+    <style>
+        /* Sfondo della pagina */
+        body {
+            background-image: url('../assets/css/images/comune.webp'); /* Sfondo comune per tutta la pagina */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Contenitore dei bottoni */
+        .button-container {
+            display: flex;
+            justify-content: center; /* Centra i bottoni orizzontalmente */
+            gap: 30px; /* Aumenta la distanza tra i bottoni */
+            max-width: 1000px; /* Larghezza massima del contenitore */
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Stile per i bottoni */
+        .button {
+            position: relative;
+            width: 300px; /* Aumenta la larghezza del bottone */
+            height: 250px; /* Aumenta l'altezza del bottone */
+            background-size: cover; /* Sfondo del bottone che copre tutto */
+            background-position: center; /* Centra l'immagine del bottone */
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-size 0.3s ease-in-out, transform 0.3s ease; /* Transizione per la dimensione dello sfondo e ingrandimento */
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Aggiungi ombra al bottone */
+        }
+
+        /* Cambia il colore di sfondo per ogni bottone individualmente */
+        .button.withdrawals {
+            background-image: url('../assets/css/images/inserimento.jpeg');
+        }
+
+        .button.communications {
+            background-image: url('../assets/css/images/inserimento.jpeg');
+        }
+
+        .button.maintenance {
+            background-image: url('../assets/css/images/inserimento.jpeg');
+        }
+
+        /* Effetto hover: ingrandisce il bottone e gestisce lo sfondo */
+        .button:hover {
+            background-size: 120%; /* Aumenta la dimensione dello sfondo per dare un effetto di zoom */
+            transform: scale(1.05); /* Ingrandisce il bottone quando il mouse è sopra */
+        }
+
+        /* Testo sopra il bottone */
+        .button-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 28px; /* Aumenta la dimensione del testo */
+            font-weight: bold;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6); /* Aggiungi ombra al testo */
+        }
+
+        /* Responsività: su schermi più piccoli */
+        @media (max-width: 768px) {
+            .button {
+                height: 200px; /* Riduce l'altezza sui dispositivi più piccoli */
+                width: 220px; /* Riduce la larghezza sui dispositivi più piccoli */
+            }
+
+            .button-text {
+                font-size: 22px; /* Riduce la dimensione del testo */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .button {
+                height: 150px; /* Riduce ulteriormente l'altezza sui dispositivi molto piccoli */
+                width: 180px; /* Riduce ulteriormente la larghezza sui dispositivi molto piccoli */
+            }
+
+            .button-text {
+                font-size: 20px; /* Riduce ulteriormente la dimensione del testo */
+            }
+        }
+
+    </style>
+</head>
+<body class="homepage is-preload">
+
+<!-- Sezione con i bottoni -->
+<div class="button-container ">
+    <a href="{{ url_for('withdrawals_archive') }}" class="button withdrawals">
+        <span class="button-text">Ritiri</span>
+    </a>
+    <a href="{{ url_for('communications_archive') }}" class="button communications">
+        <span class="button-text">Comunicazioni</span>
+    </a>
+    <a href="{{ url_for('maintenance_archive') }}" class="button maintenance">
+        <span class="button-text">Manutenzioni</span>
+    </a>
+</div>
+
+<!-- Scripts -->
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/jquery.dropotron.min.js"></script>
+<script src="../assets/js/jquery.scrolly.min.js"></script>
+<script src="../assets/js/jquery.scrollex.min.js"></script>
+<script src="../assets/js/browser.min.js"></script>
+<script src="../assets/js/breakpoints.min.js"></script>
+<script src="../assets/js/util.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

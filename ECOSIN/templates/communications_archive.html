@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <title>ECOSIN - Archivio Manutenzioni</title>
+    <title>ECOSIN - Archivio Comunicazioni</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="../assets/css/main.css" />
@@ -75,23 +75,23 @@
     </style>
 </head>
 <body>
-<h1>Archivio Manutenzioni</h1>
+<h1>Archivio Comunicazioni</h1>
 <table>
     <thead>
     <tr>
-        <th>Codice Manutenzione</th>
+        <th>Codice Comunicazione</th>
         <th>Data</th>
-        <th>Responsabile</th>
+        <th>Messaggio</th>
         <th>Ente</th>
     </tr>
     </thead>
     <tbody>
-    {% for maint in maintenances %}
+    {% for comm in communications %}
     <tr>
-        <td>{{ maint['cod_man'] }}</td>
-        <td>{{ maint['data_man'] }}</td>
-        <td>{{ maint['manutentore_nome'] }} {{ maint['manutentore_cognome'] }}</td>
-        <td>{{ maint['ente_nome'] }}</td>
+        <td>{{ comm['cod_m'] }}</td>
+        <td>{{ comm['data_m'] }}</td>
+        <td>{{ comm['messaggio'] }}</td>
+        <td>{{ comm['ente_nome'] }}</td>  <!-- Nome dell'ente invece di id_ente -->
     </tr>
     {% endfor %}
     </tbody>

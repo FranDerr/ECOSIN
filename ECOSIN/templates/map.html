@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>ECOSIN</title>
@@ -16,6 +17,10 @@
             height: 100%;
             width: 100%;
         }
+        .info-content {
+            white-space: normal;  /* Permette al testo di andare a capo */
+            word-wrap: break-word; /* Quando la parola è troppo lunga, la dividi su una nuova riga */
+        }
     </style>
 </head>
 <body>
@@ -24,6 +29,7 @@
 <script>
     let map; // La mappa
     let currentInfoWindow = null; // Per tenere traccia dell'info window aperta
+    let markers = [];  // Per tenere traccia dei marker sulla mappa
 
     function initMap() {
         // Inizializza la mappa centrata su Frattamaggiore
@@ -32,41 +38,61 @@
             zoom: 15, // Livello di zoom
         });
 
-        // Carica i dati dei dispositivi dal server
+        // Funzione per caricare i dati dei dispositivi
+        caricaDispositivi();
+    }
+
+    // Funzione per caricare i dispositivi dal server e aggiornarli sulla mappa
+    function caricaDispositivi() {
         fetch('/api/devices')
             .then(response => response.json())
             .then(data => {
+                // Pulisci i marker precedenti
+                markers.forEach(marker => marker.setMap(null));
+                markers = [];
+
+                // Aggiungi i nuovi dispositivi alla mappa
                 data.devices.forEach(device => {
-                    // Aggiungi un marker per ogni dispositivo
+                    // Crea un marker per ogni dispositivo
                     const marker = new google.maps.Marker({
                         position: { lat: device.lat, lng: device.lng },
                         map: map,
                         title: device.nome,
                         icon: {
-                            url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png", // Colore del marker (puoi cambiare "green-dot" con "red-dot", "blue-dot", etc.)
+                            url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png", // Colore del marker
                             scaledSize: new google.maps.Size(40, 40), // Imposta la dimensione dell'icona
                         }
-
                     });
 
-                    // Crea un'info window per ogni marker
+                    // Crea il contenuto dell'info window per ogni marker
+                    const infoContent = `
+                        <div class="info-content">
+                            <h3>${device.nome}</h3>
+                            <p><b>Ente:</b> ${device.descrizione_ente}</p>
+                            <p><b>Stato Bidoni:</b></p>
+                            <ul>
+                                <li><b>Plastica Bidone:</b> ${device.stato.PLASTICA_BIDONE}%</li>
+                                <li><b>Vetro Bidone:</b> ${device.stato.VETRO_BIDONE}%</li>
+                                <li><b>Carta Bidone:</b> ${device.stato.CARTA_BIDONE}%</li>
+                            </ul>
+                            <p><b>Stato Scatole:</b></p>
+                            <ul>
+                                <li><b>Plastica Scatola:</b> ${device.stato.PLASTICA_SCATOLA}%</li>
+                                <li><b>Vetro Scatola:</b> ${device.stato.VETRO_SCATOLA}%</li>
+                                <li><b>Carta Scatola:</b> ${device.stato.CARTA_SCATOLA}%</li>
+                            </ul>
+                            <button onclick="window.location.href='/product/${device._id}'" style="padding: 5px 10px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                                Vedi Altro
+                            </button>
+                        </div>
+                    `;
+
+                    // Crea la finestra di informazioni (info window)
                     const infoWindow = new google.maps.InfoWindow({
-                        content: `
-                            <div>
-                                <h3>${device.nome}</h3>
-                                <p><b>Descrizione Ente:</b> ${device.descrizione_ente}</p>
-                                <p><b>Stato Bidoni:</b></p>
-                                <ul>
-                                    <li><b>Plastica Bidone:</b> ${device.stato.PLASTICA_BIDONE}</li>
-                                    <li><b>Vetro Bidone:</b> ${device.stato.VETRO_BIDONE}</li>
-                                    <li><b>Carta Bidone:</b> ${device.stato.CARTA_BIDONE}</li>
-                                </ul>
-                                <button onclick="window.location.href='/product/${device._id}'">Vedi Altro</button>
-                            </div>
-                        `
+                        content: infoContent,
                     });
 
-                    // Mostra l'info window al click del marker
+                    // Aggiungi l'evento di click per mostrare l'info window
                     marker.addListener("click", () => {
                         // Chiudi l'info window aperta (se c'è)
                         if (currentInfoWindow) {
@@ -76,6 +102,9 @@
                         infoWindow.open(map, marker);
                         currentInfoWindow = infoWindow; // Aggiorna la finestra corrente
                     });
+
+                    // Aggiungi il marker all'array dei marker
+                    markers.push(marker);
                 });
             })
             .catch(error => {
@@ -83,6 +112,12 @@
                 alert("Impossibile caricare i dispositivi. Riprova più tardi.");
             });
     }
+
+    // Aggiornamento periodico ogni 2 minuti
+    setInterval(caricaDispositivi, 120000);  // 120000 ms = 2 minuti
+
+    // Inizializza la mappa quando la pagina è pronta
+    window.onload = initMap;
 </script>
 
 <!-- Inclusione del JavaScript API di Google Maps -->
