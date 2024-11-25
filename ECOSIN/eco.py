@@ -7,7 +7,7 @@ app = Flask(__name__, static_folder='assets', template_folder='templates')
 app.config["MONGO_URI"] = "mongodb://localhost:27017/ECOSIN"  # Sostituisci con il tuo URI MongoDB
 mongo = PyMongo(app)
 
-app.secret_key = 'secret_key_12345'
+app.secret_key = 'secret_key_12'
 
 # Route per la pagina di login
 @app.route('/', methods=['GET', 'POST'])
