@@ -6,8 +6,27 @@
     <title>Dettagli Dispositivo - {{ device.id_eco }}</title>
     <link rel="stylesheet" href="../assets/css/main.css" />
     <noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+    <style>
+        button.disabled-error {
+            color: red;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+    </style>
 </head>
 <body>
+<!-- Visualizzazione dei messaggi di Flash -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="flash-messages">
+    {% for category, message in messages %}
+    <div class="flash {{ category }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
 <div class="product-container">
     <h1>Dettagli Dispositivo: {{ device.id_eco }}</h1>
 
@@ -66,35 +85,64 @@
 
                 // Stato Bidone con il bottone "Sminuzza"
                 bidoneList.innerHTML += `
-                    <li>
-                        <b>Plastica:</b> <span>${data.plastica_bidone}%</span>
-                        <button onclick="sminuzza('plastica', '${idEco}')" ${data.plastica_bidone < 80 ? 'disabled' : ''}>Sminuzza</button>
-                    </li>
-                    <li>
-                        <b>Vetro:</b> <span>${data.vetro_bidone}%</span>
-                        <button onclick="sminuzza('vetro', '${idEco}')" ${data.vetro_bidone < 80 ? 'disabled' : ''}>Sminuzza</button>
-                    </li>
-                    <li>
-                        <b>Carta:</b> <span>${data.carta_bidone}%</span>
-                        <button onclick="sminuzza('carta', '${idEco}')" ${data.carta_bidone < 80 ? 'disabled' : ''}>Sminuzza</button>
-                    </li>
+    <li>
+        <b>Plastica:</b> <span>${data.plastica_bidone}%</span>
+        <button
+            onclick="sminuzza('plastica', '${idEco}')"
+            class="${data.plastica_bidone < 80 ? 'disabled-error' : ''}"
+            ${data.plastica_bidone < 80 ? 'disabled' : ''}>
+            Sminuzza
+        </button>
+    </li>
+    <li>
+        <b>Vetro:</b> <span>${data.vetro_bidone}%</span>
+        <button
+            onclick="sminuzza('vetro', '${idEco}')"
+            class="${data.vetro_bidone < 80 ? 'disabled-error' : ''}"
+            ${data.vetro_bidone < 80 ? 'disabled' : ''}>
+            Sminuzza
+        </button>
+    </li>
+    <li>
+        <b>Carta:</b> <span>${data.carta_bidone}%</span>
+        <button
+            onclick="sminuzza('carta', '${idEco}')"
+            class="${data.carta_bidone < 80 ? 'disabled-error' : ''}"
+            ${data.carta_bidone < 80 ? 'disabled' : ''}>
+            Sminuzza
+        </button>
+    </li>
                 `;
 
                 // Stato Scatola con il bottone "Avvia Ritiro"
                 scatolaList.innerHTML += `
-                    <li>
-                        <b>Plastica:</b> <span>${data.plastica_scatola}%</span>
-                        <button onclick="avviaRitiro('plastica', '${idEco}')" ${data.plastica_scatola < 90 ? 'disabled' : ''}>Avvia Ritiro</button>
-                    </li>
-                    <li>
-                        <b>Vetro:</b> <span>${data.vetro_scatola}%</span>
-                        <button onclick="avviaRitiro('vetro', '${idEco}')" ${data.vetro_scatola < 90 ? 'disabled' : ''}>Avvia Ritiro</button>
-                    </li>
-                    <li>
-                        <b>Carta:</b> <span>${data.carta_scatola}%</span>
-                        <button onclick="avviaRitiro('carta', '${idEco}')" ${data.carta_scatola < 90 ? 'disabled' : ''}>Avvia Ritiro</button>
-                    </li>
-                `;
+    <li>
+        <b>Plastica:</b> <span>${data.plastica_scatola}%</span>
+        <button
+            onclick="avviaRitiro('plastica', '${idEco}')"
+            class="${data.plastica_scatola < 90 ? 'disabled-error' : ''}"
+            ${data.plastica_scatola < 90 ? 'disabled' : ''}>
+            Avvia Ritiro
+        </button>
+    </li>
+    <li>
+        <b>Vetro:</b> <span>${data.vetro_scatola}%</span>
+        <button
+            onclick="avviaRitiro('vetro', '${idEco}')"
+            class="${data.vetro_scatola < 90 ? 'disabled-error' : ''}"
+            ${data.vetro_scatola < 90 ? 'disabled' : ''}>
+            Avvia Ritiro
+        </button>
+    </li>
+    <li>
+        <b>Carta:</b> <span>${data.carta_scatola}%</span>
+        <button
+            onclick="avviaRitiro('carta', '${idEco}')"
+            class="${data.carta_scatola < 90 ? 'disabled-error' : ''}"
+            ${data.carta_scatola < 90 ? 'disabled' : ''}>
+            Avvia Ritiro
+        </button>
+    </li>`;
             })
             .catch(error => {
                 console.error('Errore durante il caricamento delle percentuali:', error);
@@ -103,33 +151,78 @@
 
     // Funzione per il bottone "Sminuzza"
     function sminuzza(tipo, idEco) {
+        // Trova il livello attuale dal DOM
+        const livelloElemento = document.querySelector(`#stato-bidone-list li:has(button[onclick*="${tipo}"]) span`);
+        const livello = parseInt(livelloElemento.textContent.replace('%', ''), 10);
+        // Controlla se il livello è sotto l'80%
+        if (livello < 80) {
+            alert(`Errore: non è possibile sminuzzare ${tipo} perché il livello è inferiore all'80%.`);
+            return; // Blocca l'operazione
+        }
+
+        // Continua con l'operazione di sminuzzamento
         console.log(`Sminuzzamento del tipo ${tipo} per il dispositivo ${idEco}`);
 
-        // Esegui la logica per sminuzzare
-        fetch(`/product/sminuzza/${idEco}/${tipo}`, {method: 'POST'})
+        fetch(`/product/sminuzza/${idEco}/${tipo}`, { method: 'POST' })
             .then(response => response.json())
             .then(data => {
                 alert(`Sminuzzamento completato per ${tipo}`);
-                aggiornaPercentuali();  // Ricarica i dati
+                aggiornaPercentuali(); // Ricarica i dati
             })
             .catch(error => console.error('Errore durante lo sminuzzamento:', error));
     }
 
     // Funzione per il bottone "Avvia Ritiro"
     function avviaRitiro(tipo, idEco) {
-        console.log(`Avvio ritiro del tipo ${tipo} per il dispositivo ${idEco}`);
+        fetch(`/product/avvia_ritiro/${idEco}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ tipo: tipo }) // Passa il tipo di materiale
+        })
 
-        // Avvia il ritiro (per ora non fa nulla)
-        // Puoi implementare questa logica successivamente
-
-        alert(`Ritiro avviato per ${tipo}`);
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`Ritiro avviato con successo per ${tipo}!`);
+                    aggiornaPercentuali(); // Aggiorna i dati
+                } else {
+                    alert(`Errore: ${data.error}`);
+                }
+            })
+            .catch(error => console.error('Errore durante il ritiro:', error));
     }
+
 
     // Esegui l'aggiornamento delle percentuali quando la pagina viene caricata
     window.onload = aggiornaPercentuali;
 
-    // Esegui l'aggiornamento delle percentuali ogni 2 minuti (120000ms)
-    setInterval(aggiornaPercentuali, 120000);  // 120000 ms = 2 minuti
+    // Esegui l'aggiornamento delle percentuali
+    setInterval(aggiornaPercentuali, 60000);  // 60000 ms = 1 minuto
+
+    function manutenzione(idEco) {
+        fetch(`/product/manutenzione/${idEco}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id_eco: idEco }) // Passiamo l'ID del dispositivo al server
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Manutenzione avviata con successo!");
+                } else {
+                    alert("Errore durante l'avvio della manutenzione: " + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Errore durante la manutenzione:', error);
+                alert("Si è verificato un errore durante la manutenzione.");
+            });
+    }
+
 </script>
 
 <!-- Scripts -->

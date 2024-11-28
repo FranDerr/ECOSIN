@@ -45,15 +45,15 @@
 
         /* Cambia il colore di sfondo per ogni bottone individualmente */
         .button.withdrawals {
-            background-image: url('../assets/css/images/inserimento.jpeg');
+            background-image: url('../assets/css/images/ritiri.jpeg');
         }
 
         .button.communications {
-            background-image: url('../assets/css/images/inserimento.jpeg');
+            background-image: url('../assets/css/images/comunicazioni.jpg');
         }
 
         .button.maintenance {
-            background-image: url('../assets/css/images/inserimento.jpeg');
+            background-image: url('../assets/css/images/manutenzione.jpg');
         }
 
         /* Effetto hover: ingrandisce il bottone e gestisce lo sfondo */
@@ -100,7 +100,18 @@
     </style>
 </head>
 <body class="homepage is-preload">
-
+<!-- Visualizzazione dei messaggi di Flash -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="flash-messages">
+    {% for category, message in messages %}
+    <div class="flash {{ category }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
 <!-- Sezione con i bottoni -->
 <div class="button-container ">
     <a href="{{ url_for('withdrawals_archive') }}" class="button withdrawals">

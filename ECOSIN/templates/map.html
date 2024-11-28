@@ -24,6 +24,18 @@
     </style>
 </head>
 <body>
+<!-- Visualizzazione dei messaggi di Flash -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="flash-messages">
+    {% for category, message in messages %}
+    <div class="flash {{ category }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
 <div id="map"></div>
 
 <script>
@@ -113,8 +125,8 @@
             });
     }
 
-    // Aggiornamento periodico ogni 2 minuti
-    setInterval(caricaDispositivi, 120000);  // 120000 ms = 2 minuti
+    // Aggiornamento periodico
+    setInterval(caricaDispositivi, 60000);  // 60000 ms = 1 minuto
 
     // Inizializza la mappa quando la pagina è pronta
     window.onload = initMap;

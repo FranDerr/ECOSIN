@@ -1,4 +1,3 @@
-
 <html lang="it">
 <head>
     <title>ECOSIN</title>
@@ -8,15 +7,29 @@
     <noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
 
     <style>
+        /* Corpo della pagina senza sfocatura */
         body {
-            background-image: url('../assets/css/images/comune.webp'); /* Sfondo comune per tutta la pagina */
-            background-size: cover;
-            background-position: center;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            position: relative; /* Per posizionare il contenuto sopra il background */
+            overflow: hidden;
+        }
+
+        /* Elemento per il background sfocato */
+        .background-blur {
+            position: absolute; /* Fissa il background */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('../assets/css/images/comune.webp'); /* Sfondo comune per tutta la pagina */
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px); /* Sfocatura dello sfondo */
+            z-index: -1; /* Metti il background dietro tutto il contenuto */
         }
 
         /* Contenitore dei bottoni */
@@ -27,6 +40,8 @@
             max-width: 800px; /* Larghezza massima */
             width: 100%;
             text-align: center;
+            position: relative; /* Necessario per il contenuto sopra il background */
+            z-index: 1; /* Posiziona il contenuto sopra lo sfondo */
         }
 
         /* Stile per i bottoni */
@@ -39,29 +54,26 @@
             border: none;
             border-radius: 15px;
             cursor: pointer;
-            transition: background-size 0.3s ease-in-out; /* Transizione per la dimensione dello sfondo */
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Aggiungi ombra al bottone */
+            overflow: hidden; /* Nasconde eventuali parti del bottone fuori dalla bordatura */
+            transition: none; /* Disabilita la transizione */
         }
 
-        /* Cambia il colore di sfondo per ogni bottone individualmente, puoi sostituire le URL con quelle che desideri */
+        /* Cambia il colore di sfondo per ogni bottone individualmente */
         .button.mappa {
-            background-image: url('../assets/css/images/inserimento.jpeg');
+            background-image: url('../assets/css/images/mappa.PNG');
         }
 
         .button.comunicazioni {
-            background-image: url('../assets/css/images/inserimento.jpeg');
+            background-image: url('../assets/css/images/comunicazioni.jpg');
         }
 
         .button.manutenzioni {
-            background-image: url('../assets/css/images/inserimento.jpeg');
+            background-image: url('../assets/css/images/manutenzione.jpg');
         }
 
         .button.archivio {
-            background-image: url('../assets/css/images/inserimento.jpeg');
-        }
-        /* Effetto hover: ingrandisce il bottone e gestisce lo sfondo */
-        .button:hover {
-            background-size: 110%; /* Aumenta la dimensione dello sfondo per dare un effetto di zoom */
+            background-image: url('../assets/css/images/archivio.jpg');
         }
 
         /* Testo sopra il bottone */
@@ -98,23 +110,36 @@
         }
 
     </style>
-
-
 </head>
 <body class="homepage is-preload">
+<!-- Background sfocato -->
+<div class="background-blur"></div>
+
+<!-- Visualizzazione dei messaggi di Flash -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="flash-messages">
+    {% for category, message in messages %}
+    <div class="flash {{ category }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
 
 <!-- Sezione con i bottoni -->
 <div class="button-container">
-    <a href="{{ url_for('map_page') }}" class="button mappa");>
+    <a href="{{ url_for('map_page') }}" class="button mappa">
         <span class="button-text">Mappa</span>
     </a>
-    <a href="{{ url_for('communication_page') }}" class="button comunicazioni" );>
+    <a href="{{ url_for('communication_page') }}" class="button comunicazioni">
         <span class="button-text">Comunicazioni</span>
     </a>
-    <a href="{{ url_for('maintenance_page') }}" class="button manutenzioni" );>
+    <a href="{{ url_for('maintenance_page') }}" class="button manutenzioni">
         <span class="button-text">Manutenzioni</span>
     </a>
-    <a href="{{ url_for('archive_page') }}" class="button archivio" );>
+    <a href="{{ url_for('archive_page') }}" class="button archivio">
         <span class="button-text">Archivio</span>
     </a>
 </div>

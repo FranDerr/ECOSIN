@@ -6,14 +6,14 @@
     <title>Gestione Manutenzioni</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 0;
+            background-image: url('../assets/css/images/comune.webp'); /* Sfondo comune per tutta la pagina */
+            background-size: cover;
+            background-position: center;
             display: flex;
-            height: 100vh;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
 
         .container {
@@ -90,11 +90,11 @@
         }
 
         .button.mappa {
-            background-image: url('../assets/css/images/inserimento.jpeg');
+            background-image: url('../assets/css/images/manutenzione.jpg');
         }
 
         .button.comunicazioni {
-            background-image: url('../assets/css/images/inserimento.jpeg');
+            background-image: url('../assets/css/images/ritiri.jpeg');
         }
 
         .button:hover {
@@ -148,24 +148,36 @@
     </style>
 </head>
 <body>
+<!-- Visualizzazione dei messaggi di Flash -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="flash-messages">
+    {% for category, message in messages %}
+    <div class="flash {{ category }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
 <div class="container">
     <div class="main-container">
         <h1>Gestione Manutenzioni</h1>
-
+<form method="POST">
         <!-- Selezione Ente -->
         <div class="form-section">
             <label for="ente">Seleziona Ente</label>
-            <select id="ente" name="ente">
+            <select id="ente" name="ente" required>
                 <option value="" disabled selected>Seleziona un ente...</option>
                 {% for ente in enti %}
-                <option value="{{ ente['id_ente'] }}">{{ ente['nome_d'] }}</option>
+                <option value="{{ ente.id_ente }}">{{ ente['nome_d'] }}</option>
                 {% endfor %}
             </select>
         </div>
 
         <div class="form-section">
             <label for="azione">Seleziona Azione</label>
-            <select id="azione">
+            <select id="azione" name ="azione" required>
                 <option value="" disabled selected>Scegli tra Manutenzione e Ritiro...</option>
                 <option value="manutenzione">Manutenzione</option>
                 <option value="ritiro">Ritiro</option>
@@ -174,12 +186,13 @@
 
         <div class="form-section">
             <label for="data">Inserisci Data</label>
-            <input type="date" id="data">
+            <input type="date" id="data" name ="data" required>
         </div>
 
         <div class="form-section">
             <button id="invia">Invia</button>
         </div>
+</form>
     </div>
 
     <div class="sidebar">
@@ -197,19 +210,6 @@
 </div>
 
 <script>
-    document.getElementById('invia').addEventListener('click', function () {
-        const ente = document.getElementById('ente').value;
-        const azione = document.getElementById('azione').value;
-        const data = document.getElementById('data').value;
-
-        if (!ente || !azione || !data) {
-            alert("Per favore, compila tutti i campi e seleziona un'azione.");
-            return;
-        }
-
-        console.log("Dati inviati:", { ente, azione, data });
-        alert(`Operazione di ${azione} registrata con successo!`);
-    });
 
     // Imposta la data di domani come minimo per il campo data
     const oggi = new Date();
