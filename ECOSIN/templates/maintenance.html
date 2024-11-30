@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestione Manutenzioni</title>
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
     <style>
         /* Corpo della pagina */
         body {
@@ -254,7 +256,10 @@
 
 <!-- Sfondo sfocato -->
 <div class="background-blur"></div>
-
+<!-- Bottone di Logout -->
+<form action="{{ url_for('logout') }}" method="POST">
+    <button type="submit" class="logout-button">Logout</button>
+</form>
 <div class="container">
     <!-- Form principale -->
     <div class="main-container">
@@ -315,5 +320,16 @@
         </div>
     </div>
 </div>
+
+
+<!-- Scripts -->
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/jquery.dropotron.min.js"></script>
+<script src="../assets/js/jquery.scrolly.min.js"></script>
+<script src="../assets/js/jquery.scrollex.min.js"></script>
+<script src="../assets/js/browser.min.js"></script>
+<script src="../assets/js/breakpoints.min.js"></script>
+<script src="../assets/js/util.js"></script>
+<script src="../assets/js/main.js"></script>
 </body>
 </html>

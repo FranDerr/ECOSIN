@@ -117,6 +117,10 @@
 <body class="homepage is-preload">
 <!-- Background sfocato -->
 <div class="background-blur"></div>
+<!-- Bottone di Logout -->
+<form action="{{ url_for('logout') }}" method="POST">
+    <button type="submit" class="logout-button">Logout</button>
+</form>
 
 <!-- Visualizzazione dei messaggi di Flash -->
 {% with messages = get_flashed_messages(with_categories=true) %}
@@ -143,6 +147,7 @@
         <span class="button-text">Manutenzioni</span>
     </a>
 </div>
+
 
 <!-- Scripts -->
 <script src="../assets/js/jquery.min.js"></script>

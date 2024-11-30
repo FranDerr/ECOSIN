@@ -112,6 +112,10 @@
 <body>
 <!-- Sfondo sfocato -->
 <div class="background-blur"></div>
+<!-- Bottone di Logout -->
+<form action="{{ url_for('logout') }}" method="POST">
+    <button type="submit" class="logout-button">Logout</button>
+</form>
 <h1>Manutenzioni da fare</h1>
 
 <table>
@@ -139,6 +143,8 @@
     </tbody>
 
 </table>
+
+
 
 <!-- Scripts -->
 <script src="../assets/js/jquery.min.js"></script>

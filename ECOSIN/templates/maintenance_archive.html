@@ -130,9 +130,11 @@
 
 <!-- Sfondo sfocato -->
 <div class="background-blur"></div>
-
+<!-- Bottone di Logout -->
+<form action="{{ url_for('logout') }}" method="POST">
+    <button type="submit" class="logout-button">Logout</button>
+</form>
 <!-- Contenitore principale del contenuto -->
-<div class="content">
     <h1>Archivio Manutenzioni</h1>
 
     <table>
@@ -159,7 +161,7 @@
         {% endfor %}
         </tbody>
     </table>
-</div>
+
 
 <!-- Scripts -->
 <script src="../assets/js/jquery.min.js"></script>

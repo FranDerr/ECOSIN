@@ -120,7 +120,10 @@
 <body class="homepage is-preload">
 <!-- Background sfocato -->
 <div class="background-blur"></div>
-
+<!-- Bottone di Logout -->
+<form action="{{ url_for('logout') }}" method="POST">
+    <button type="submit" class="logout-button">Logout</button>
+</form>
 <!-- Sezione con i bottoni -->
 <div class="button-container">
     <a href="{{ url_for('map_page') }}" class="button mappa">
@@ -136,6 +139,7 @@
         <span class="button-text">Archivio</span>
     </a>
 </div>
+
 
 <!-- Scripts -->
 <script src="../assets/js/jquery.min.js"></script>

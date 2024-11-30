@@ -26,7 +26,10 @@
 <body>
 
 <div id="map"></div>
-
+<!-- Bottone di Logout -->
+<form action="{{ url_for('logout') }}" method="POST">
+    <button type="submit" class="logout-button">Logout</button>
+</form>
 <script>
     let map; // La mappa
     let currentInfoWindow = null; // Per tenere traccia dell'info window aperta
@@ -123,6 +126,8 @@
 
 <!-- Inclusione del JavaScript API di Google Maps -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArFnhDZO3GD6sso3cs1jkSX5FQMCXO7fg&callback=initMap" async defer></script>
+
+
 <!-- Scripts -->
 <script src="../assets/js/jquery.min.js"></script>
 <script src="../assets/js/jquery.dropotron.min.js"></script>

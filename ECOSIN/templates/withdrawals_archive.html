@@ -112,7 +112,10 @@
 <body>
 <!-- Sfondo sfocato -->
 <div class="background-blur"></div>
-
+<!-- Bottone di Logout -->
+<form action="{{ url_for('logout') }}" method="POST">
+    <button type="submit" class="logout-button">Logout</button>
+</form>
 <h1>Archivio Ritiri</h1>
 
 <table>
@@ -139,6 +142,7 @@
     {% endfor %}
     </tbody>
 </table>
+
 
 <!-- Scripts -->
 <script src="../assets/js/jquery.min.js"></script>

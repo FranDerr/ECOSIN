@@ -1,7 +1,7 @@
 import random
 from datetime import datetime, timedelta
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import Flask, render_template, redirect, url_for, session, flash
+from flask import Flask, render_template, redirect, url_for, session, flash, send_from_directory
 from flask_pymongo import PyMongo
 
 app = Flask(__name__, static_folder='assets', template_folder='templates')
@@ -31,6 +31,7 @@ def login():
             return redirect(url_for('login'))
 
     return render_template('login.html')
+
 
 # Route per il logout
 @app.route('/logout', methods=['POST'])
@@ -701,7 +702,7 @@ def communication_page():
         ])
 
         # Passa i dati al template
-        return render_template('communications.html', communications=communications)
+        return render_template('communications.html', communications=communications, logged_in=True)
     else:
         return redirect(url_for('login'))
 

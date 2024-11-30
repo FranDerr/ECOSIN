@@ -141,7 +141,10 @@
 
 <!-- Sfondo sfocato -->
 <div class="background-blur"></div>
-
+<!-- Bottone di Logout -->
+<form action="{{ url_for('logout') }}" method="POST">
+    <button type="submit" class="logout-button">Logout</button>
+</form>
 <!-- Contenitore principale -->
 <div class="container">
     <h1>Dettagli Dispositivo: {{ device.id_eco }}</h1>
@@ -333,5 +336,15 @@
     }
 </script>
 
+
+<!-- Scripts -->
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/jquery.dropotron.min.js"></script>
+<script src="../assets/js/jquery.scrolly.min.js"></script>
+<script src="../assets/js/jquery.scrollex.min.js"></script>
+<script src="../assets/js/browser.min.js"></script>
+<script src="../assets/js/breakpoints.min.js"></script>
+<script src="../assets/js/util.js"></script>
+<script src="../assets/js/main.js"></script>
 </body>
 </html>
