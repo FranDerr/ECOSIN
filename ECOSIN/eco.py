@@ -28,13 +28,15 @@ def login():
             return redirect(url_for('portal'))  # Redirige alla mappa dopo il login
         else:
             flash('Credenziali non valide!', 'error')
+            return redirect(url_for('login'))
 
     return render_template('login.html')
 
 # Route per il logout
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
     session.pop('username', None)
+    flash('Sei stato disconnesso con successo!', 'info')  # Messaggio di disconnessione
     return redirect(url_for('login'))
 
 # Route per la pagina del portale
@@ -145,6 +147,9 @@ def maintenance_page():
     # Recupero gli enti dal database
     enti = mongo.db.Enti.find()  # Ottenere tutti gli enti
 
+    # Calcola la data di domani
+    tomorrow = (datetime.today() + timedelta(days=1)).date()
+
     if request.method == 'POST':
         # Recupera i dati dal form
         id_ente = request.form.get('ente')  # L'utente seleziona l'id_ente direttamente
@@ -153,15 +158,21 @@ def maintenance_page():
 
         # Verifica che tutti i dati siano stati inviati
         if not id_ente or not azione or not data_str:
-            flash("Per favore, compila tutti i campi!", "error")
+            flash('Per favore, compila tutti i campi!', 'error')
             return redirect(url_for('maintenance_page'))  # Ritorna alla stessa pagina
 
         # Converti la data dal formato stringa a un oggetto datetime
         try:
             # Usa solo la parte di data (giorno, mese, anno), senza orario
             data = datetime.strptime(data_str, "%Y-%m-%d").date()  # .date() esclude l'orario
+
+            # Verifica che la data inserita sia maggiore di domani
+            if data < tomorrow:
+                flash('La data deve essere successiva o uguale a domani.', 'error')
+                return redirect(url_for('maintenance_page'))
+
         except ValueError:
-            flash("Formato data non valido.", "error")
+            flash('Formato data non valido.', 'error')
             return redirect(url_for('maintenance_page'))
 
         # Verifica che l'ente esista nel database
@@ -226,7 +237,7 @@ def maintenance_page():
 
             # Inserimento nel database
             mongo.db.Manutenzioni.insert_one(manutenzione_data)
-            flash("Manutenzione registrata con successo!", "success")
+            flash('Manutenzione registrata con successo!', 'success')
 
             # Crea la comunicazione per manutenzione
             create_communication(id_ente, azione, data_str)
@@ -242,7 +253,7 @@ def maintenance_page():
 
             # Inserimento nel database
             mongo.db.Ritiri.insert_one(ritiro_data)
-            flash("Ritiro registrato con successo!", "success")
+            flash('Ritiro registrato con successo!', 'success')
             # Crea la comunicazione per ritiro
             create_communication(id_ente, azione, data_str)
 
@@ -736,8 +747,6 @@ def create_communication(id_ente, azione, data_str):
         print(f"Errore durante la creazione della comunicazione: {e}")
 
 
-
-
 # Route per la pagina dell'archivio
 @app.route('/archivio')
 def archive_page():
@@ -900,12 +909,10 @@ def maintenance_archive():
                 }
             }
         ])
-
         # Passa i dati al template
         return render_template('maintenance_archive.html', maintenances=maintenances)
     else:
         return redirect(url_for('login'))
-
 
 if __name__ == '__main__':
     start_scheduler()

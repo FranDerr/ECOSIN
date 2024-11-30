@@ -28,7 +28,7 @@
             background-image: url('../assets/css/images/comune.webp'); /* Sfondo comune per tutta la pagina */
             background-size: cover;
             background-position: center;
-            filter: blur(8px); /* Sfocatura dello sfondo */
+            filter: blur(5px); /* Sfocatura dello sfondo */
             z-index: -1; /* Metti il background dietro tutto il contenuto */
         }
 
@@ -49,17 +49,17 @@
             position: relative;
             width: 100%;
             height: 200px; /* Altezza del bottone */
-            background-size: cover; /* Sfondo del bottone che copre tutto */
-            background-position: center; /* Centra l'immagine del bottone */
+            background-size: cover !important; /* Blocca la dimensione dello sfondo */
+            background-position: center !important; /* Blocca la posizione dello sfondo */
             border: none;
             border-radius: 15px;
             cursor: pointer;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Aggiungi ombra al bottone */
             overflow: hidden; /* Nasconde eventuali parti del bottone fuori dalla bordatura */
-            transition: none; /* Disabilita la transizione */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Animazione solo su scala e ombra */
         }
 
-        /* Cambia il colore di sfondo per ogni bottone individualmente */
+        /* Specifica immagini di sfondo per ciascun bottone */
         .button.mappa {
             background-image: url('../assets/css/images/mappa.PNG');
         }
@@ -74,6 +74,12 @@
 
         .button.archivio {
             background-image: url('../assets/css/images/archivio.jpg');
+        }
+
+        /* Effetto hover: ingrandisce il bottone ma lo sfondo rimane bloccato */
+        .button:hover {
+            transform: scale(1.05); /* Ingrandisce leggermente il bottone */
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3); /* Aumenta l'ombra durante l'hover */
         }
 
         /* Testo sopra il bottone */
@@ -114,19 +120,6 @@
 <body class="homepage is-preload">
 <!-- Background sfocato -->
 <div class="background-blur"></div>
-
-<!-- Visualizzazione dei messaggi di Flash -->
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-<div class="flash-messages">
-    {% for category, message in messages %}
-    <div class="flash {{ category }}">
-        {{ message }}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-{% endwith %}
 
 <!-- Sezione con i bottoni -->
 <div class="button-container">

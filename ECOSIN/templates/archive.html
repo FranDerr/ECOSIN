@@ -7,16 +7,29 @@
     <noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
 
     <style>
-        /* Sfondo della pagina */
+        /* Corpo della pagina senza sfocatura */
         body {
-            background-image: url('../assets/css/images/comune.webp'); /* Sfondo comune per tutta la pagina */
-            background-size: cover;
-            background-position: center;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            position: relative; /* Per posizionare il contenuto sopra il background */
+            overflow: hidden;
+        }
+
+        /* Elemento per il background sfocato */
+        .background-blur {
+            position: absolute; /* Fissa il background */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('../assets/css/images/comune.webp'); /* Sfondo comune per tutta la pagina */
+            background-size: cover;
+            background-position: center;
+            filter: blur(5px); /* Sfocatura dello sfondo */
+            z-index: -1; /* Metti il background dietro tutto il contenuto */
         }
 
         /* Contenitore dei bottoni */
@@ -27,20 +40,22 @@
             max-width: 1000px; /* Larghezza massima del contenitore */
             width: 100%;
             text-align: center;
+            z-index: 1; /* Posiziona il contenuto sopra lo sfondo */
         }
 
         /* Stile per i bottoni */
         .button {
             position: relative;
-            width: 300px; /* Aumenta la larghezza del bottone */
-            height: 250px; /* Aumenta l'altezza del bottone */
-            background-size: cover; /* Sfondo del bottone che copre tutto */
-            background-position: center; /* Centra l'immagine del bottone */
+            width: 100%;
+            height: 200px; /* Altezza del bottone */
+            background-size: cover !important; /* Blocca la dimensione dello sfondo */
+            background-position: center !important; /* Blocca la posizione dello sfondo */
             border: none;
             border-radius: 15px;
             cursor: pointer;
-            transition: background-size 0.3s ease-in-out, transform 0.3s ease; /* Transizione per la dimensione dello sfondo e ingrandimento */
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Aggiungi ombra al bottone */
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Aggiungi ombra al bottone */
+            overflow: hidden; /* Nasconde eventuali parti del bottone fuori dalla bordatura */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Animazione solo su scala e ombra */
         }
 
         /* Cambia il colore di sfondo per ogni bottone individualmente */
@@ -100,6 +115,9 @@
     </style>
 </head>
 <body class="homepage is-preload">
+<!-- Background sfocato -->
+<div class="background-blur"></div>
+
 <!-- Visualizzazione dei messaggi di Flash -->
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
@@ -112,8 +130,9 @@
 </div>
 {% endif %}
 {% endwith %}
+
 <!-- Sezione con i bottoni -->
-<div class="button-container ">
+<div class="button-container">
     <a href="{{ url_for('withdrawals_archive') }}" class="button withdrawals">
         <span class="button-text">Ritiri</span>
     </a>

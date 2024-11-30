@@ -1,75 +1,228 @@
 <html lang="it">
 <head>
-    <title>ECOSIN</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <title>Dettagli Dispositivo - {{ device.id_eco }}</title>
     <link rel="stylesheet" href="../assets/css/main.css" />
     <noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
     <style>
+        /* Corpo della pagina */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;  /* Cambiato da height a min-height */
+            margin: 0;
+            position: relative;
+            overflow: auto; /* Permette lo scroll */
+            font-family: 'Arial', sans-serif;
+            background-color: #eaf0e9;
+        }
+
+
+        /* Sfondo sfocato */
+        .background-blur {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('../assets/css/images/comune.webp'); /* Sfondo comune per tutta la pagina */
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px); /* Sfocatura dello sfondo */
+            z-index: -1; /* Metti lo sfondo dietro tutto il contenuto */
+        }
+
+        /* Contenitore principale */
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 90%;
+            max-width: 1200px;
+            justify-content: center;
+            align-items: flex-start;
+            z-index: 1; /* Posiziona il contenuto sopra lo sfondo */
+            margin-top: 20px;
+        }
+
+        h1 {
+            color: #2c6b3c; /* Verde scuro */
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        table th, table td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        table th {
+            background-color: #2ecc71; /* Verde brillante */
+            color: white;
+        }
+
+        table td {
+            background-color: #f2fdf0; /* Sfumature di verde chiaro */
+        }
+
+        button {
+            background-color: #27ae60; /* Verde medio */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s ease;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #1e8449; /* Verde scuro al passaggio del mouse */
+            transform: scale(1.05);
+        }
+
         button.disabled-error {
-            color: red;
+            background-color: #e74c3c;
             cursor: not-allowed;
             opacity: 0.6;
         }
+
+        /* Responsività */
+        @media (max-width: 768px) {
+            table th, table td {
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            button {
+                width: 100%;
+                padding: 12px;
+                font-size: 18px;
+            }
+        }
+        /* Bottoni verdi quando l'azione è possibile */
+        button.enabled-action {
+            background-color: #27ae60; /* Verde medio */
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s ease;
+        }
+
+        button.enabled-action:hover {
+            background-color: #1e8449; /* Verde scuro al passaggio del mouse */
+            transform: scale(1.05);
+        }
+
+        /* Bottoni rossi quando l'azione non è possibile */
+        button.disabled-action {
+            background-color: #e74c3c; /* Rosso per azione disabilitata */
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        button.disabled-action:hover {
+            background-color: #e74c3c; /* Mantieni il rosso al passaggio del mouse */
+            transform: none; /* Nessuna animazione di ingrandimento */
+        }
+
     </style>
 </head>
 <body>
-<!-- Visualizzazione dei messaggi di Flash -->
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-<div class="flash-messages">
-    {% for category, message in messages %}
-    <div class="flash {{ category }}">
-        {{ message }}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-{% endwith %}
-<div class="product-container">
+
+<!-- Sfondo sfocato -->
+<div class="background-blur"></div>
+
+<!-- Contenitore principale -->
+<div class="container">
     <h1>Dettagli Dispositivo: {{ device.id_eco }}</h1>
 
-    <!-- Dettagli Ente -->
-    <div class="section">
-        <h3>Informazioni sull'Ente</h3>
-        <p><b>Ente:</b> {{ ente.nome_d }}</p>
-        <p><b>Indirizzo:</b> {{ ente.via }}</p>
-        <p><b>Email Responsabile:</b> {{ ente.email_dir }}</p>
-    </div>
+    <!-- Informazioni sull'Ente -->
+    <table>
+        <thead>
+        <tr>
+            <th colspan="2">Informazioni sull'Ente</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><b>Ente:</b></td>
+            <td>{{ ente.nome_d }}</td>
+        </tr>
+        <tr>
+            <td><b>Indirizzo:</b></td>
+            <td>{{ ente.via }}</td>
+        </tr>
+        <tr>
+            <td><b>Email Responsabile:</b></td>
+            <td>{{ ente.email_dir }}</td>
+        </tr>
+        </tbody>
+    </table>
 
     <!-- Stato Bidone -->
-    <div class="section">
-        <h2>Stato Bidone</h2>
-        <ul id="stato-bidone-list">
-            <!-- I dati verranno caricati qui dinamicamente -->
-        </ul>
-    </div>
+    <table>
+        <thead>
+        <tr>
+            <th colspan="3">Stato Bidone</th>
+        </tr>
+        </thead>
+        <tbody id="stato-bidone">
+        <!-- I dati vengono caricati dinamicamente -->
+        </tbody>
+    </table>
 
     <!-- Stato Scatola -->
-    <div class="section">
-        <h2>Stato Scatola</h2>
-        <ul id="stato-scatola-list">
-            <!-- I dati verranno caricati qui dinamicamente -->
-        </ul>
-    </div>
+    <table>
+        <thead>
+        <tr>
+            <th colspan="3">Stato Scatola</th>
+        </tr>
+        </thead>
+        <tbody id="stato-scatola">
+        <!-- I dati vengono caricati dinamicamente -->
+        </tbody>
+    </table>
 
     <!-- Manutenzione -->
-    <div class="section">
-        <h2>Manutenzione</h2>
-        <p><b>Ultima manutenzione:</b> {{ ultima_manutenzione.data_man if ultima_manutenzione else 'Non disponibile' }}</p>
-        <p><b>Prossima manutenzione (prevista tra 30 giorni):</b> {{ prossima_manutenzione }}</p>
-        <button onclick="manutenzione('{{ device.id_eco }}')">Avvia Manutenzione</button>
-    </div>
+    <table>
+        <thead>
+        <tr>
+            <th colspan="2">Manutenzione</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><b>Ultima Manutenzione:</b></td>
+            <td>{{ ultima_manutenzione.data_man if ultima_manutenzione else 'Non disponibile' }}</td>
+        </tr>
+        <tr>
+            <td><b>Prossima Manutenzione (prevista tra 30 giorni):</b></td>
+            <td>{{ prossima_manutenzione }}</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button onclick="manutenzione('{{ device.id_eco }}')">Avvia Manutenzione</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 <script>
-    // Ottieni l'ID del dispositivo dalla variabile (può essere passato dal template o dalla URL)
-    const idEco = '{{ device.id_eco }}';  // Esempio, id_eco passato dal template
-
+    // Funzione per ottenere e aggiornare le percentuali
     // Funzione per ottenere e aggiornare le percentuali
     function aggiornaPercentuali() {
-        fetch(`/product/percentuali/${idEco}`)  // Passa l'id_eco per ottenere i dati specifici
+        fetch(`/product/percentuali/{{ device.id_eco }}`)
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
@@ -77,97 +230,60 @@
                     return;
                 }
 
-                // Vuoto le liste esistenti
-                const bidoneList = document.getElementById('stato-bidone-list');
-                const scatolaList = document.getElementById('stato-scatola-list');
-                bidoneList.innerHTML = '';
-                scatolaList.innerHTML = '';
+                // Stato Bidone
+                const bidoneElement = document.getElementById('stato-bidone');
+                bidoneElement.innerHTML = `
+                <tr>
+                    <td><b>Plastica:</b></td>
+                    <td>${data.plastica_bidone}%</td>
+                    <td><button onclick="sminuzza('plastica', '{{ device.id_eco }}')" class="${data.plastica_bidone < 80 ? 'disabled-action' : 'enabled-action'}" ${data.plastica_bidone < 80 ? 'disabled' : ''}>Sminuzza</button></td>
+                </tr>
+                <tr>
+                    <td><b>Vetro:</b></td>
+                    <td>${data.vetro_bidone}%</td>
+                    <td><button onclick="sminuzza('vetro', '{{ device.id_eco }}')" class="${data.vetro_bidone < 80 ? 'disabled-action' : 'enabled-action'}" ${data.vetro_bidone < 80 ? 'disabled' : ''}>Sminuzza</button></td>
+                </tr>
+                <tr>
+                    <td><b>Carta:</b></td>
+                    <td>${data.carta_bidone}%</td>
+                    <td><button onclick="sminuzza('carta', '{{ device.id_eco }}')" class="${data.carta_bidone < 80 ? 'disabled-action' : 'enabled-action'}" ${data.carta_bidone < 80 ? 'disabled' : ''}>Sminuzza</button></td>
+                </tr>
+            `;
 
-                // Stato Bidone con il bottone "Sminuzza"
-                bidoneList.innerHTML += `
-    <li>
-        <b>Plastica:</b> <span>${data.plastica_bidone}%</span>
-        <button
-            onclick="sminuzza('plastica', '${idEco}')"
-            class="${data.plastica_bidone < 80 ? 'disabled-error' : ''}"
-            ${data.plastica_bidone < 80 ? 'disabled' : ''}>
-            Sminuzza
-        </button>
-    </li>
-    <li>
-        <b>Vetro:</b> <span>${data.vetro_bidone}%</span>
-        <button
-            onclick="sminuzza('vetro', '${idEco}')"
-            class="${data.vetro_bidone < 80 ? 'disabled-error' : ''}"
-            ${data.vetro_bidone < 80 ? 'disabled' : ''}>
-            Sminuzza
-        </button>
-    </li>
-    <li>
-        <b>Carta:</b> <span>${data.carta_bidone}%</span>
-        <button
-            onclick="sminuzza('carta', '${idEco}')"
-            class="${data.carta_bidone < 80 ? 'disabled-error' : ''}"
-            ${data.carta_bidone < 80 ? 'disabled' : ''}>
-            Sminuzza
-        </button>
-    </li>
-                `;
-
-                // Stato Scatola con il bottone "Avvia Ritiro"
-                scatolaList.innerHTML += `
-    <li>
-        <b>Plastica:</b> <span>${data.plastica_scatola}%</span>
-        <button
-            onclick="avviaRitiro('plastica', '${idEco}')"
-            class="${data.plastica_scatola < 90 ? 'disabled-error' : ''}"
-            ${data.plastica_scatola < 90 ? 'disabled' : ''}>
-            Avvia Ritiro
-        </button>
-    </li>
-    <li>
-        <b>Vetro:</b> <span>${data.vetro_scatola}%</span>
-        <button
-            onclick="avviaRitiro('vetro', '${idEco}')"
-            class="${data.vetro_scatola < 90 ? 'disabled-error' : ''}"
-            ${data.vetro_scatola < 90 ? 'disabled' : ''}>
-            Avvia Ritiro
-        </button>
-    </li>
-    <li>
-        <b>Carta:</b> <span>${data.carta_scatola}%</span>
-        <button
-            onclick="avviaRitiro('carta', '${idEco}')"
-            class="${data.carta_scatola < 90 ? 'disabled-error' : ''}"
-            ${data.carta_scatola < 90 ? 'disabled' : ''}>
-            Avvia Ritiro
-        </button>
-    </li>`;
+                // Stato Scatola
+                const scatolaElement = document.getElementById('stato-scatola');
+                scatolaElement.innerHTML = `
+                <tr>
+                    <td><b>Plastica:</b></td>
+                    <td>${data.plastica_scatola}%</td>
+                    <td><button onclick="avviaRitiro('plastica', '{{ device.id_eco }}')" class="${data.plastica_scatola === 100 ? 'enabled-action' : 'disabled-action'}" ${data.plastica_scatola !== 100 ? 'disabled' : ''}>Avvia Ritiro</button></td>
+                </tr>
+                <tr>
+                    <td><b>Vetro:</b></td>
+                    <td>${data.vetro_scatola}%</td>
+                    <td><button onclick="avviaRitiro('vetro', '{{ device.id_eco }}')" class="${data.vetro_scatola === 100 ? 'enabled-action' : 'disabled-action'}" ${data.vetro_scatola !== 100 ? 'disabled' : ''}>Avvia Ritiro</button></td>
+                </tr>
+                <tr>
+                    <td><b>Carta:</b></td>
+                    <td>${data.carta_scatola}%</td>
+                    <td><button onclick="avviaRitiro('carta', '{{ device.id_eco }}')" class="${data.carta_scatola === 100 ? 'enabled-action' : 'disabled-action'}" ${data.carta_scatola !== 100 ? 'disabled' : ''}>Avvia Ritiro</button></td>
+                </tr>
+            `;
             })
-            .catch(error => {
-                console.error('Errore durante il caricamento delle percentuali:', error);
-            });
+            .catch(error => console.error('Errore durante il caricamento delle percentuali:', error));
     }
 
     // Funzione per il bottone "Sminuzza"
     function sminuzza(tipo, idEco) {
-        // Trova il livello attuale dal DOM
-        const livelloElemento = document.querySelector(`#stato-bidone-list li:has(button[onclick*="${tipo}"]) span`);
-        const livello = parseInt(livelloElemento.textContent.replace('%', ''), 10);
-        // Controlla se il livello è sotto l'80%
-        if (livello < 80) {
-            alert(`Errore: non è possibile sminuzzare ${tipo} perché il livello è inferiore all'80%.`);
-            return; // Blocca l'operazione
-        }
-
-        // Continua con l'operazione di sminuzzamento
-        console.log(`Sminuzzamento del tipo ${tipo} per il dispositivo ${idEco}`);
-
-        fetch(`/product/sminuzza/${idEco}/${tipo}`, { method: 'POST' })
+        fetch(`/product/sminuzza/${idEco}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tipo: tipo })
+        })
             .then(response => response.json())
             .then(data => {
                 alert(`Sminuzzamento completato per ${tipo}`);
-                aggiornaPercentuali(); // Ricarica i dati
+                aggiornaPercentuali();
             })
             .catch(error => console.error('Errore durante lo sminuzzamento:', error));
     }
@@ -176,17 +292,14 @@
     function avviaRitiro(tipo, idEco) {
         fetch(`/product/avvia_ritiro/${idEco}`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ tipo: tipo }) // Passa il tipo di materiale
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tipo: tipo })
         })
-
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     alert(`Ritiro avviato con successo per ${tipo}!`);
-                    aggiornaPercentuali(); // Aggiorna i dati
+                    aggiornaPercentuali();
                 } else {
                     alert(`Errore: ${data.error}`);
                 }
@@ -197,17 +310,13 @@
 
     // Esegui l'aggiornamento delle percentuali quando la pagina viene caricata
     window.onload = aggiornaPercentuali;
-
-    // Esegui l'aggiornamento delle percentuali
-    setInterval(aggiornaPercentuali, 60000);  // 60000 ms = 1 minuto
+    setInterval(aggiornaPercentuali, 60000); // Aggiorna ogni minuto
 
     function manutenzione(idEco) {
         fetch(`/product/manutenzione/${idEco}`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id_eco: idEco }) // Passiamo l'ID del dispositivo al server
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_eco: idEco })
         })
             .then(response => response.json())
             .then(data => {
@@ -222,20 +331,7 @@
                 alert("Si è verificato un errore durante la manutenzione.");
             });
     }
-
 </script>
 
-<!-- Scripts -->
-<script src="../assets/js/jquery.min.js"></script>
-<script src="../assets/js/jquery.dropotron.min.js"></script>
-<script src="../assets/js/jquery.scrolly.min.js"></script>
-<script src="../assets/js/jquery.scrollex.min.js"></script>
-<script src="../assets/js/browser.min.js"></script>
-<script src="../assets/js/breakpoints.min.js"></script>
-<script src="../assets/js/util.js"></script>
-<script src="../assets/js/main.js"></script>
 </body>
 </html>
-
-
-

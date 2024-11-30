@@ -5,22 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestione Manutenzioni</title>
     <style>
+        /* Corpo della pagina */
         body {
-            background-image: url('../assets/css/images/comune.webp'); /* Sfondo comune per tutta la pagina */
-            background-size: cover;
-            background-position: center;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            position: relative; /* Necessario per posizionare lo sfondo sfocato */
+            overflow: hidden;
         }
 
+        /* Sfondo sfocato */
+        .background-blur {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('../assets/css/images/comune.webp'); /* Sfondo comune per tutta la pagina */
+            background-size: cover;
+            background-position: center;
+            filter: blur(5px); /* Sfocatura dello sfondo */
+            z-index: -1; /* Metti lo sfondo dietro tutto il contenuto */
+        }
+
+        /* Contenitore principale */
         .container {
             display: flex;
             width: 90%;
             max-width: 1200px;
             justify-content: space-between;
+            z-index: 1; /* Posiziona il contenuto sopra lo sfondo */
         }
 
         .main-container {
@@ -29,7 +45,6 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-left: 0;
         }
 
         h1 {
@@ -48,16 +63,50 @@
             color: #555;
         }
 
+        /* Stile comune per gli input e select */
         .form-section select,
         .form-section input {
-            width: 100%;
+            width: 100%; /* Assicura che gli input e select occupino tutta la larghezza disponibile */
+            /* Imposta il padding per uniformare gli spazi interni */
             padding: 10px;
+            margin-bottom: 10px; /* Aggiunge uno spazio tra gli elementi */
+            border: 1px solid #ccc; /* Definisce un bordo uniforme */
+            border-radius: 5px; /* Bordo arrotondato */
+            font-size: 16px; /* Imposta una dimensione del testo uniforme */
+            box-sizing: border-box; /* Include padding e bordi nel calcolo della larghezza */
+        }
+
+
+
+        /* Aggiungi un piccolo margine tra le sezioni del form */
+        .form-section {
+            margin-bottom: 20px;
+        }
+
+        /* Modifica del layout del form */
+        .form-section label {
+            display: block;
             margin-bottom: 10px;
-            border: 1px solid #ccc;
+            font-weight: bold;
+            color: #555;
+        }
+
+
+        .form-section button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
             border-radius: 5px;
+            cursor: pointer;
             font-size: 16px;
         }
 
+        .form-section button:hover {
+            background-color: #45a049;
+        }
+
+        /* Sidebar e bottoni */
         .sidebar {
             width: 30%;
             display: flex;
@@ -80,15 +129,17 @@
             position: relative;
             width: 100%;
             height: 200px;
-            background-size: cover;
-            background-position: center;
+            background-size: cover !important; /* Blocca la dimensione dello sfondo */
+            background-position: center !important; /* Blocca la posizione dello sfondo */
             border: none;
             border-radius: 15px;
             cursor: pointer;
-            transition: background-size 0.3s ease-in-out;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Animazione fluida */
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden; /* Nasconde eventuali contenuti che eccedono */
         }
 
+        /* Specifica immagini di sfondo per ciascun bottone */
         .button.mappa {
             background-image: url('../assets/css/images/manutenzione.jpg');
         }
@@ -97,8 +148,10 @@
             background-image: url('../assets/css/images/ritiri.jpeg');
         }
 
+        /* Effetto hover: ingrandisce il bottone senza modificare lo sfondo */
         .button:hover {
-            background-size: 110%;
+            transform: scale(1.05); /* Ingrandisce leggermente il bottone */
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3); /* Aumenta l'ombra durante l'hover */
         }
 
         .button-text {
@@ -132,99 +185,135 @@
             }
         }
 
-        .form-section button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
+        /* Contenitore dei flash messages */
+        .flash-messages {
+            display: flex; /* Affianca il flash message e il pulsante */
+            justify-content: flex-start; /* Posiziona a sinistra i messaggi */
+            align-items: center; /* Allinea verticalmente il messaggio */
+            gap: 10px; /* Spazio tra il messaggio e il pulsante */
+            margin-bottom: 20px;
         }
 
-        .form-section button:hover {
-            background-color: #45a049;
+        /* Stile base per i flash message */
+        .flash {
+            padding: 10px;
+            margin: 0; /* Rimuove il margine di default */
+            border-radius: 5px;
+            font-size: 16px;
+            line-height: 1.5;
+            display: inline-block;
+            max-width: 60%; /* Limita la larghezza del flash message */
+            flex-shrink: 0; /* Impedisce che il messaggio si restringa */
         }
+
+        /* Flash message di successo */
+        .flash.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        /* Flash message di errore */
+        .flash.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Flash message informativo */
+        .flash.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        /* Flash message con icona */
+        .flash.info::before {
+            content: "ℹ️";
+            margin-right: 8px;
+        }
+
+        .flash.error::before {
+            content: "❌";
+            margin-right: 8px;
+        }
+
+        .flash.success::before {
+            content: "✅";
+            margin-right: 8px;
+        }
+
+        /* Modifica lo stile del form e i suoi input per la sezione Data */
+        .form-section input[type="date"] {
+            padding-right: 5px; /* Spazio per l'icona */
+        }
+
     </style>
 </head>
 <body>
-<!-- Visualizzazione dei messaggi di Flash -->
-{% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-<div class="flash-messages">
-    {% for category, message in messages %}
-    <div class="flash {{ category }}">
-        {{ message }}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-{% endwith %}
+
+<!-- Sfondo sfocato -->
+<div class="background-blur"></div>
+
 <div class="container">
+    <!-- Form principale -->
     <div class="main-container">
         <h1>Gestione Manutenzioni</h1>
-<form method="POST">
-        <!-- Selezione Ente -->
-        <div class="form-section">
-            <label for="ente">Seleziona Ente</label>
-            <select id="ente" name="ente" required>
-                <option value="" disabled selected>Seleziona un ente...</option>
-                {% for ente in enti %}
-                <option value="{{ ente.id_ente }}">{{ ente['nome_d'] }}</option>
-                {% endfor %}
-            </select>
+        <!-- Visualizzazione dei messaggi di Flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash {{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
         </div>
+        {% endif %}
+        {% endwith %}
+        <form method="POST">
+            <div class="form-section">
+                <label for="ente">Seleziona Ente</label>
+                <select id="ente" name="ente" required>
+                    <option value="" disabled selected>Seleziona un ente...</option>
+                    {% for ente in enti %}
+                    <option value="{{ ente.id_ente }}">{{ ente['nome_d'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <div class="form-section">
-            <label for="azione">Seleziona Azione</label>
-            <select id="azione" name ="azione" required>
-                <option value="" disabled selected>Scegli tra Manutenzione e Ritiro...</option>
-                <option value="manutenzione">Manutenzione</option>
-                <option value="ritiro">Ritiro</option>
-            </select>
-        </div>
+            <div class="form-section">
+                <label for="azione">Seleziona Azione</label>
+                <select id="azione" name ="azione" required>
+                    <option value="" disabled selected>Scegli tra Manutenzione e Ritiro...</option>
+                    <option value="manutenzione">Manutenzione</option>
+                    <option value="ritiro">Ritiro</option>
+                </select>
+            </div>
 
-        <div class="form-section">
-            <label for="data">Inserisci Data</label>
-            <input type="date" id="data" name ="data" required>
-        </div>
+            <div class="form-section">
+                <label for="data">Inserisci Data</label>
+                <input type="date" id="data" name ="data" required min="{{tomorrow }}">
+            </div>
 
-        <div class="form-section">
-            <button id="invia">Invia</button>
-        </div>
-</form>
+            <div class="form-section">
+                <button id="invia">Invia</button>
+
+            </div>
+        </form>
     </div>
 
+    <!-- Sidebar con bottoni -->
     <div class="sidebar">
         <div class="button-container">
-            <!-- Collegamento alla pagina manutenzioni da fare -->
             <a href="{{ url_for('maintenance_todo') }}" class="button mappa">
                 <span class="button-text">Manutenzioni da fare</span>
             </a>
-            <!-- Collegamento alla pagina ritiri da fare (corretto nome del file) -->
             <a href="{{ url_for('withdrawals_todo') }}" class="button comunicazioni">
                 <span class="button-text">Ritiri da fare</span>
             </a>
         </div>
     </div>
 </div>
-
-<script>
-
-    // Imposta la data di domani come minimo per il campo data
-    const oggi = new Date();
-    oggi.setDate(oggi.getDate() + 1);  // Aggiungi 1 giorno
-    const giornoDomani = oggi.toISOString().split('T')[0]; // Ottieni la data in formato YYYY-MM-DD
-    document.getElementById('data').setAttribute('min', giornoDomani);
-
-    // Aggiungi un listener per la validazione al submit del form
-    document.getElementById('manutenzioneForm').addEventListener('submit', function(event) {
-        const dataInput = document.getElementById('data').value;
-        if (new Date(dataInput) < new Date(giornoDomani)) {
-            alert('La data deve essere maggiore o uguale a domani.');
-            event.preventDefault(); // Impedisce l'invio del form
-        }
-    });
-</script>
 </body>
 </html>
