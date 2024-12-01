@@ -125,6 +125,7 @@
         <th>Data</th>
         <th>Responsabile</th>
         <th>Ente</th>
+        <th>Materiale</th> <!-- Nuova colonna -->
     </tr>
     </thead>
     <tbody>
@@ -134,10 +135,11 @@
         <td>{{ ritiro['data_r'] }}</td>
         <td>{{ ritiro['manutentore_nome'] }} {{ ritiro['manutentore_cognome'] }}</td>
         <td>{{ ritiro['ente_nome'] }}</td>
+        <td>{{ ritiro['materiale']|upper }}</td> <!-- Nuova colonna -->
     </tr>
     {% else %}
     <tr>
-        <td colspan="4">Nessun ritiro disponibile.</td>
+        <td colspan="5">Nessun ritiro disponibile.</td> <!-- Aggiorna il colspan -->
     </tr>
     {% endfor %}
     </tbody>

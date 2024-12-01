@@ -295,6 +295,15 @@
                     <option value="ritiro">Ritiro</option>
                 </select>
             </div>
+            <div class="form-section" id="material-section" style="display: none;">
+                <label for="materiale">Seleziona Materiale</label>
+                <select id="materiale" name="materiale">
+                    <option value="" disabled selected>Seleziona il materiale...</option>
+                    <option value="PLASTICA">Plastica</option>
+                    <option value="VETRO">Vetro</option>
+                    <option value="CARTA">Carta</option>
+                </select>
+            </div>
 
             <div class="form-section">
                 <label for="data">Inserisci Data</label>
@@ -321,6 +330,22 @@
     </div>
 </div>
 
+<script>
+    // Riferimenti agli elementi del DOM
+    const azioneSelect = document.getElementById('azione');
+    const materialSection = document.getElementById('material-section');
+
+    // Aggiungi un event listener al menu a tendina "Azione"
+    azioneSelect.addEventListener('change', function() {
+        if (this.value === 'ritiro') {
+            // Mostra la select per il materiale
+            materialSection.style.display = 'block';
+        } else {
+            // Nascondi la select per il materiale
+            materialSection.style.display = 'none';
+        }
+    });
+</script>
 
 <!-- Scripts -->
 <script src="../assets/js/jquery.min.js"></script>

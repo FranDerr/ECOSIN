@@ -143,7 +143,7 @@ def product_page(device_id):
 
 #----------------------------------------------------------------------------------------------------------------
 # Route per la pagina delle manutenzioni
-@app.route('/manutenzioni',methods=['GET', 'POST'])
+@app.route('/manutenzioni', methods=['GET', 'POST'])
 def maintenance_page():
     # Recupero gli enti dal database
     enti = mongo.db.Enti.find()  # Ottenere tutti gli enti
@@ -156,18 +156,19 @@ def maintenance_page():
         id_ente = request.form.get('ente')  # L'utente seleziona l'id_ente direttamente
         azione = request.form.get('azione')
         data_str = request.form.get('data')  # La data che l'utente inserisce
+        materiale = request.form.get('materiale')  # Tipo di materiale per ritiro (solo se necessario)
 
-        # Verifica che tutti i dati siano stati inviati
-        if not id_ente or not azione or not data_str:
+        # Verifica che tutti i dati richiesti siano presenti
+        if not id_ente or not azione or not data_str or (azione == 'ritiro' and not materiale):
             flash('Per favore, compila tutti i campi!', 'error')
-            return redirect(url_for('maintenance_page'))  # Ritorna alla stessa pagina
+            return redirect(url_for('maintenance_page'))
 
         # Converti la data dal formato stringa a un oggetto datetime
         try:
             # Usa solo la parte di data (giorno, mese, anno), senza orario
-            data = datetime.strptime(data_str, "%Y-%m-%d").date()  # .date() esclude l'orario
+            data = datetime.strptime(data_str, "%Y-%m-%d").date()
 
-            # Verifica che la data inserita sia maggiore di domani
+            # Verifica che la data inserita sia maggiore o uguale a domani
             if data < tomorrow:
                 flash('La data deve essere successiva o uguale a domani.', 'error')
                 return redirect(url_for('maintenance_page'))
@@ -229,38 +230,35 @@ def maintenance_page():
         # A seconda dell'azione (manutenzione o ritiro), salva i dati nel database
         if azione == 'manutenzione':
             manutenzione_data = {
-                'cod_man': codice_univoco,  # Codice univoco per la manutenzione
-                'id_eco': id_eco,  # ID Eco recuperato
-                'data_man': data_str,  # Memorizza la data come stringa nel formato YYYY-MM-DD
-                'cf_man': cf_man,  # Codice fiscale del manutentore
-                'id_ente': id_ente  # L'ente selezionato
+                'cod_man': codice_univoco,
+                'id_eco': id_eco,
+                'data_man': data_str,
+                'cf_man': cf_man,
+                'id_ente': id_ente
             }
-
-            # Inserimento nel database
             mongo.db.Manutenzioni.insert_one(manutenzione_data)
             flash('Manutenzione registrata con successo!', 'success')
-
             # Crea la comunicazione per manutenzione
-            create_communication(id_ente, azione, data_str)
+            create_communication(id_ente, azione, data_str,materiale=None)
 
         elif azione == 'ritiro':
             ritiro_data = {
-                'cod_r': codice_univoco,  # Codice univoco per il ritiro
-                'id_eco': id_eco,  # ID Eco recuperato
-                'data_r': data_str,  # Memorizza la data come stringa nel formato YYYY-MM-DD
-                'cf_man': cf_man,  # Codice fiscale del manutentore
-                'id_ente': id_ente  # L'ente selezionato
+                'cod_r': codice_univoco,
+                'id_eco': id_eco,
+                'data_r': data_str,
+                'cf_man': cf_man,
+                'id_ente': id_ente,
+                'materiale': materiale  # Aggiungi il tipo di materiale
             }
-
-            # Inserimento nel database
             mongo.db.Ritiri.insert_one(ritiro_data)
             flash('Ritiro registrato con successo!', 'success')
             # Crea la comunicazione per ritiro
-            create_communication(id_ente, azione, data_str)
+            create_communication(id_ente, azione, data_str,materiale)
 
-        return redirect(url_for('maintenance_page'))  # Rimanda alla pagina dopo aver inserito i dati
+        return redirect(url_for('maintenance_page'))
 
-    return render_template('maintenance.html', enti=enti)  # Visualizza la pagina con gli enti
+    return render_template('maintenance.html', enti=enti, tomorrow=tomorrow)
+
 
 
 # Route per la pagina di manutenzioni da fare
@@ -322,63 +320,63 @@ def maintenance_todo():
         return redirect(url_for('login'))
 
 
-# Route per la pagina di ritiri da fare (corretto il nome del file)
 @app.route('/withdrawals_todo')
 def withdrawals_todo():
     if 'username' in session:
-        # Ottieni la data odierna come stringa
         today = datetime.now().strftime("%Y-%m-%d")
 
-        # Query per unire Ritiri con Enti e Manutentori, e filtrare le date
         withdrawals = mongo.db.Ritiri.aggregate([
             {
                 "$match": {
-                    "data_r": {"$gte": today}  # Filtra le date maggiori o uguali a oggi
+                    "data_r": {"$gte": today}
                 }
             },
             {
                 "$lookup": {
-                    "from": "Enti",  # Nome della collezione Enti
-                    "localField": "id_ente",  # Campo in Ritiri che fa riferimento a Enti
-                    "foreignField": "id_ente",  # Campo in Enti che corrisponde
-                    "as": "ente_info"  # Nome del campo di output per i dati uniti
+                    "from": "Enti",
+                    "localField": "id_ente",
+                    "foreignField": "id_ente",
+                    "as": "ente_info"
                 }
             },
             {
-                "$unwind": "$ente_info"  # Separa i dati uniti (uno per ogni ente)
+                "$unwind": "$ente_info"
             },
             {
                 "$sort": {
-                    "data_r": 1  # Ordina per data_m in ordine crescente (imminenti in cima)
+                    "data_r": 1
                 }
             },
             {
                 "$lookup": {
-                    "from": "Manutentori",  # Nome della collezione Manutentori
-                    "localField": "cf_man",  # Campo in Ritiri che fa riferimento a Manutentori
-                    "foreignField": "cf_man",  # Campo in Manutentori che corrisponde
-                    "as": "manutentore_info"  # Nome del campo di output per i dati uniti
+                    "from": "Manutentori",
+                    "localField": "cf_man",
+                    "foreignField": "cf_man",
+                    "as": "manutentore_info"
                 }
             },
             {
-                "$unwind": "$manutentore_info"  # Separa i dati uniti (uno per ogni manutentore)
+                "$unwind": "$manutentore_info"
             },
             {
                 "$project": {
-                    "_id": 0,                 # Escludi il campo _id
-                    "cod_r": 1,               # Includi il codice ritiro
-                    "data_r": 1,              # Includi la data del ritiro
-                    "ente_nome": "$ente_info.nome_d",  # Nome dell'ente
-                    "manutentore_nome": "$manutentore_info.nome_m",  # Nome del manutentore
-                    "manutentore_cognome": "$manutentore_info.cognome_m"  # Cognome del manutentore
+                    "_id": 0,
+                    "cod_r": 1,
+                    "data_r": 1,
+                    "ente_nome": "$ente_info.nome_d",
+                    "manutentore_nome": "$manutentore_info.nome_m",
+                    "manutentore_cognome": "$manutentore_info.cognome_m",
+                    "materiale": 1  # Visualizza direttamente il campo 'materiale' come stringa
                 }
             }
         ])
 
-        # Passa i dati al template
         return render_template('withdrawals_todo.html', withdrawals=withdrawals)
     else:
         return redirect(url_for('login'))
+
+
+
 
 #----------------------------------------------------------------------------------------------------------------
 
@@ -573,11 +571,12 @@ def avvia_ritiro(id_eco):
                 'data_r': data_ritiro,
                 'cf_man': cf_man,
                 'id_ente': id_ente,
+                'materiale': tipo_materiale  # Aggiungi il materiale al ritiro
             }
             mongo.db.Ritiri.insert_one(ritiro_data)
 
             # Crea comunicazione di ritiro
-            create_communication(id_ente, azione='ritiro', data_str=data_ritiro)
+            create_communication(id_ente, azione='ritiro', data_str=data_ritiro, materiale=tipo_materiale)
 
             # Svuota la scatola dopo il ritiro (senza modificare il bidone)
             if tipo_materiale == "plastica":
@@ -596,6 +595,7 @@ def avvia_ritiro(id_eco):
             return jsonify({'success': False, 'error': str(e)}), 500
     else:
         return jsonify({'success': False, 'error': 'Utente non autenticato'}), 401
+
 
 
 @app.route('/product/manutenzione/<id_eco>', methods=['POST'])
@@ -646,7 +646,7 @@ def avvia_manutenzione(id_eco):
             }
             mongo.db.Manutenzioni.insert_one(manutenzione_data)
 
-            create_communication(id_ente, azione='manutenzione', data_str=data_manutenzione)
+            create_communication(id_ente, azione='manutenzione', data_str=data_manutenzione, materiale = None)
 
 
         # Restituisce una risposta di successo
@@ -707,7 +707,7 @@ def communication_page():
         return redirect(url_for('login'))
 
 # Funzione per creare una comunicazione nel database
-def create_communication(id_ente, azione, data_str):
+def create_communication(id_ente, azione, data_str, materiale):
     try:
         # Genera il codice univoco per la comunicazione
         last_communication = mongo.db.Comunicazioni.find().sort('cod_m', -1).limit(1)
@@ -722,7 +722,7 @@ def create_communication(id_ente, azione, data_str):
         if azione == 'manutenzione':
             message = f"PASSERA' IL GIORNO {data_str} UN NOSTRO INCARICATO PER LA MANUTENZIONE."
         elif azione == 'ritiro':
-            message = f"IL GIORNO {data_str} SI EFFETTUA IL RITIRO."
+                message = f"IL GIORNO {data_str} SI EFFETTUA IL RITIRO DEL/LA {materiale.upper()}."
 
         # Mostra i dati che stai cercando di inserire
         print(f"Comunicazione da inserire: Codice: {new_code}, Ente: {id_ente}, Data: {data_str}, Messaggio: {message}")
@@ -746,6 +746,7 @@ def create_communication(id_ente, azione, data_str):
 
     except Exception as e:
         print(f"Errore durante la creazione della comunicazione: {e}")
+
 
 
 # Route per la pagina dell'archivio
@@ -801,6 +802,7 @@ def withdrawals_archive():
                     "_id": 0,                 # Escludi il campo _id
                     "cod_r": 1,               # Includi il codice ritiro
                     "data_r": 1,              # Includi la data del ritiro
+                    "materiale": 1,           # Includi il materiale
                     "ente_nome": "$ente_info.nome_d",  # Nome dell'ente
                     "manutentore_nome": "$manutentore_info.nome_m",  # Nome del manutentore
                     "manutentore_cognome": "$manutentore_info.cognome_m"  # Cognome del manutentore
@@ -812,6 +814,7 @@ def withdrawals_archive():
         return render_template('withdrawals_archive.html', withdrawals=withdrawals)
     else:
         return redirect(url_for('login'))
+
 
 
 @app.route('/communications_archive')
