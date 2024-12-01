@@ -149,7 +149,7 @@ def maintenance_page():
     enti = mongo.db.Enti.find()  # Ottenere tutti gli enti
 
     # Calcola la data di domani
-    tomorrow = (datetime.today() + timedelta(days=1)).date()
+    tomorrow = (datetime.today() + timedelta(days=0)).date()  # Domani
 
     if request.method == 'POST':
         # Recupera i dati dal form
@@ -165,7 +165,6 @@ def maintenance_page():
 
         # Converti la data dal formato stringa a un oggetto datetime
         try:
-            # Usa solo la parte di data (giorno, mese, anno), senza orario
             data = datetime.strptime(data_str, "%Y-%m-%d").date()
 
             # Verifica che la data inserita sia maggiore o uguale a domani
@@ -227,6 +226,28 @@ def maintenance_page():
         # Genera il codice univoco per manutenzione o ritiro
         codice_univoco = get_next_code(azione)
 
+        # Recupera lo stato del dispositivo dal database
+        stato = mongo.db.Stato_Ecosin.find_one({"id_eco": id_eco})
+        if not stato:
+            flash(f"Nessuno stato trovato per l'id {id_eco}.", "error")
+            return redirect(url_for('maintenance_page'))
+
+        # Gestione del tipo di materiale e verifica se il materiale è almeno al 90% nella scatola
+        if materiale == "PLASTICA":
+            scatola = stato.get('plastica_scatola', 0)
+        elif materiale == "VETRO":
+            scatola = stato.get('vetro_scatola', 0)
+        elif materiale == "CARTA":
+            scatola = stato.get('carta_scatola', 0)
+        else:
+            flash("Tipo di materiale non valido", "error")
+            return redirect(url_for('maintenance_page'))
+
+        # Verifica che la percentuale nella scatola sia almeno 90%
+        if scatola < 90:
+            flash('La scatola deve essere almeno al 90% per avviare il ritiro', 'error')
+            return redirect(url_for('maintenance_page'))
+
         # A seconda dell'azione (manutenzione o ritiro), salva i dati nel database
         if azione == 'manutenzione':
             manutenzione_data = {
@@ -255,9 +276,22 @@ def maintenance_page():
             # Crea la comunicazione per ritiro
             create_communication(id_ente, azione, data_str,materiale)
 
+            # Svuota la scatola dopo il ritiro (senza modificare il bidone)
+            if materiale == "PLASTICA":
+                stato['plastica_scatola'] = 0
+            elif materiale == "VETRO":
+                stato['vetro_scatola'] = 0
+            elif materiale == "CARTA":
+                stato['carta_scatola'] = 0
+
+            # Salva lo stato aggiornato nel database
+            mongo.db.Stato_Ecosin.update_one({"id_eco": id_eco}, {"$set": stato})
+
+
         return redirect(url_for('maintenance_page'))
 
     return render_template('maintenance.html', enti=enti, tomorrow=tomorrow)
+
 
 
 
