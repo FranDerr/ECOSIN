@@ -57,16 +57,44 @@
 
                 // Aggiungi i nuovi dispositivi alla mappa
                 data.devices.forEach(device => {
+                    // Verifica se almeno uno dei valori è 100
+                    let isFlashing =
+                        device.stato.PLASTICA_BIDONE == 100 ||
+                        device.stato.VETRO_BIDONE == 100 ||
+                        device.stato.CARTA_BIDONE == 100 ||
+                        device.stato.PLASTICA_SCATOLA == 100 ||
+                        device.stato.VETRO_SCATOLA == 100 ||
+                        device.stato.CARTA_SCATOLA == 100;
+
                     // Crea un marker per ogni dispositivo
                     const marker = new google.maps.Marker({
                         position: { lat: device.lat, lng: device.lng },
                         map: map,
                         title: device.nome,
                         icon: {
-                            url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png", // Colore del marker
+                            url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png", // Colore del marker (verde per default)
                             scaledSize: new google.maps.Size(40, 40), // Imposta la dimensione dell'icona
                         }
                     });
+
+                    // Funzione di lampeggio (se il marker deve lampeggiare)
+                    if (isFlashing) {
+                        let isVisible = true;
+                        setInterval(() => {
+                            if (isVisible) {
+                                marker.setIcon({
+                                    url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png", // Icona verde
+                                    scaledSize: new google.maps.Size(40, 40)
+                                });
+                            } else {
+                                marker.setIcon({
+                                    url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", // Cambia colore per "lampeggio"
+                                    scaledSize: new google.maps.Size(40, 40)
+                                });
+                            }
+                            isVisible = !isVisible; // Alterna la visibilità
+                        }, 500); // 500 ms di intervallo per far lampeggiare il marker
+                    }
 
                     // Crea il contenuto dell'info window per ogni marker
                     const infoContent = `
@@ -126,7 +154,6 @@
 
 <!-- Inclusione del JavaScript API di Google Maps -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArFnhDZO3GD6sso3cs1jkSX5FQMCXO7fg&callback=initMap" async defer></script>
-
 
 <!-- Scripts -->
 <script src="../assets/js/jquery.min.js"></script>

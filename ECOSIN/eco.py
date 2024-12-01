@@ -149,7 +149,7 @@ def maintenance_page():
     enti = mongo.db.Enti.find()  # Ottenere tutti gli enti
 
     # Calcola la data di domani
-    tomorrow = (datetime.today() + timedelta(days=0)).date()  # Domani
+    tomorrow = (datetime.today() + timedelta(days=1)).date()  # Domani
 
     if request.method == 'POST':
         # Recupera i dati dal form
@@ -226,27 +226,7 @@ def maintenance_page():
         # Genera il codice univoco per manutenzione o ritiro
         codice_univoco = get_next_code(azione)
 
-        # Recupera lo stato del dispositivo dal database
-        stato = mongo.db.Stato_Ecosin.find_one({"id_eco": id_eco})
-        if not stato:
-            flash(f"Nessuno stato trovato per l'id {id_eco}.", "error")
-            return redirect(url_for('maintenance_page'))
 
-        # Gestione del tipo di materiale e verifica se il materiale è almeno al 90% nella scatola
-        if materiale == "PLASTICA":
-            scatola = stato.get('plastica_scatola', 0)
-        elif materiale == "VETRO":
-            scatola = stato.get('vetro_scatola', 0)
-        elif materiale == "CARTA":
-            scatola = stato.get('carta_scatola', 0)
-        else:
-            flash("Tipo di materiale non valido", "error")
-            return redirect(url_for('maintenance_page'))
-
-        # Verifica che la percentuale nella scatola sia almeno 90%
-        if scatola < 90:
-            flash('La scatola deve essere almeno al 90% per avviare il ritiro', 'error')
-            return redirect(url_for('maintenance_page'))
 
         # A seconda dell'azione (manutenzione o ritiro), salva i dati nel database
         if azione == 'manutenzione':
@@ -263,6 +243,27 @@ def maintenance_page():
             create_communication(id_ente, azione, data_str,materiale=None)
 
         elif azione == 'ritiro':
+            # Recupera lo stato del dispositivo dal database
+            stato = mongo.db.Stato_Ecosin.find_one({"id_eco": id_eco})
+            if not stato:
+                flash(f"Nessuno stato trovato per l'id {id_eco}.", "error")
+                return redirect(url_for('maintenance_page'))
+
+            # Gestione del tipo di materiale e verifica se il materiale è almeno al 90% nella scatola
+            if materiale == "PLASTICA":
+                scatola = stato.get('plastica_scatola', 0)
+            elif materiale == "VETRO":
+                scatola = stato.get('vetro_scatola', 0)
+            elif materiale == "CARTA":
+                scatola = stato.get('carta_scatola', 0)
+            else:
+                flash("Tipo di materiale non valido", "error")
+                return redirect(url_for('maintenance_page'))
+
+            # Verifica che la percentuale nella scatola sia almeno 90%
+            if scatola < 90:
+                flash('La scatola deve essere almeno al 90% per avviare il ritiro', 'error')
+                return redirect(url_for('maintenance_page'))
             ritiro_data = {
                 'cod_r': codice_univoco,
                 'id_eco': id_eco,
