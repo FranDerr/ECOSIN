@@ -239,17 +239,17 @@
                 <tr>
                     <td><b>Plastica:</b></td>
                     <td>${data.plastica_bidone}%</td>
-                    <td><button onclick="sminuzza('plastica', '{{ device.id_eco }}')" class="${data.plastica_bidone > 80 ? 'enabled-action' : 'disabled-action'}" ${data.plastica_bidone < 80 ? 'disabled' : ''}>Sminuzza</button></td>
+                    <td><button onclick="sminuzza('plastica', '{{ device.id_eco }}')" class="${data.plastica_bidone >= 80 ? 'enabled-action' : 'disabled-action'}" ${data.plastica_bidone < 80 ? 'disabled' : ''}>Sminuzza</button></td>
                 </tr>
                 <tr>
                     <td><b>Vetro:</b></td>
                     <td>${data.vetro_bidone}%</td>
-                    <td><button onclick="sminuzza('vetro', '{{ device.id_eco }}')" class="${data.vetro_bidone > 80 ? 'enabled-action' : 'disabled-action'}" ${data.vetro_bidone < 80 ? 'disabled' : ''}>Sminuzza</button></td>
+                    <td><button onclick="sminuzza('vetro', '{{ device.id_eco }}')" class="${data.vetro_bidone >= 80 ? 'enabled-action' : 'disabled-action'}" ${data.vetro_bidone < 80 ? 'disabled' : ''}>Sminuzza</button></td>
                 </tr>
                 <tr>
                     <td><b>Carta:</b></td>
                     <td>${data.carta_bidone}%</td>
-                    <td><button onclick="sminuzza('carta', '{{ device.id_eco }}')" class="${data.carta_bidone > 80 ? 'enabled-action' : 'disabled-action'}" ${data.carta_bidone < 80 ? 'disabled' : ''}>Sminuzza</button></td>
+                    <td><button onclick="sminuzza('carta', '{{ device.id_eco }}')" class="${data.carta_bidone >= 80 ? 'enabled-action' : 'disabled-action'}" ${data.carta_bidone < 80 ? 'disabled' : ''}>Sminuzza</button></td>
                 </tr>
             `;
 
