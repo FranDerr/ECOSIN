@@ -1,13 +1,13 @@
 import random
-from datetime import datetime, timedelta
+
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import Flask, render_template, redirect, url_for, session, flash, send_from_directory
+from flask import Flask, render_template, redirect, url_for, session, flash
 from flask_pymongo import PyMongo
 
 app = Flask(__name__, static_folder='assets', template_folder='templates')
 
 # Configura la connessione a MongoDB
-app.config["MONGO_URI"] = "mongodb://localhost:27017/ECOSIN"  # Sostituisci con il tuo URI MongoDB
+app.config["MONGO_URI"] = "mongodb+srv://ECOSIN:ECOSINproject@ecosin.p1ac6.mongodb.net/ECOSIN?retryWrites=true&w=majority"
 mongo = PyMongo(app)
 
 app.secret_key = 'secret_key_12345'
