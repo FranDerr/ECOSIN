@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="deca04d5-6c1e-4270-8bc4-5127a87cde4e" name="Changes" comment="aggiunta del file requirements e connessione al mongodb" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="FranDerr &lt;francesco.derrico002@studenti.uniparthenope.it&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;FranDerr&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/FranDerr/ECOSIN.git&quot;,
+    &quot;accountId&quot;: &quot;b04a3fb9-1e51-4ddd-bc4e-dee3a2d21825&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2oiBfsmpKI8uZUoHqJCKKnlWOtJ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JavaScript Debug.SITO.html.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.login.html.executor&quot;: &quot;Run&quot;,
+    &quot;Python.app.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Pc/WebstormProjects/ECOSIN/ECOSIN/assets/css/images&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mongo&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Pc\WebstormProjects\ECOSIN\ECOSIN\assets\css\images" />
+      <recent name="C:\Users\Pc\WebstormProjects\ECOSIN\ECOSIN\templates" />
+      <recent name="C:\Users\Pc\WebstormProjects\ECOSIN\ECOSIN\assets\js" />
+      <recent name="C:\Users\Pc\WebstormProjects\ECOSIN\ECOSIN\images" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Pc\WebstormProjects\ECOSIN\ECOSIN\static" />
+      <recent name="C:\Users\Pc\WebstormProjects\ECOSIN\Funzioni_bozza\Login_+_Db\static" />
+      <recent name="C:\Users\Pc\WebstormProjects\ECOSIN\Funzioni_bozza\Login_+_Db\image" />
+      <recent name="C:\Users\Pc\WebstormProjects\ECOSIN\Funzioni_bozza\Login_+_Db" />
+      <recent name="C:\Users\Pc\WebstormProjects\ECOSIN\Funzioni_bozza\Login_+_Db\static\css" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JavaScript Debug.index.html">
+    <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/ECOSIN/ECOSIN/static/index.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
+    <configuration name="login.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/ECOSIN/Funzioni bozza/Login + Db/templates/login.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ECOSIN" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Funzioni bozza/Login + Db" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Funzioni bozza/Login + Db/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="JavaScript Debug.index.html" />
+      <item itemvalue="JavaScript Debug.login.html" />
+      <item itemvalue="Python.app" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JavaScript Debug.index.html" />
+        <item itemvalue="Python.app" />
+        <item itemvalue="JavaScript Debug.login.html" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-WS-243.21565.180" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="deca04d5-6c1e-4270-8bc4-5127a87cde4e" name="Changes" comment="" />
+      <created>1731342621694</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1731342621694</updated>
+      <workItem from="1731342622978" duration="2689000" />
+      <workItem from="1731345501868" duration="892000" />
+      <workItem from="1731346415993" duration="119000" />
+      <workItem from="1731768686412" duration="11000" />
+      <workItem from="1731841334391" duration="324000" />
+      <workItem from="1731841674664" duration="289000" />
+      <workItem from="1731842071409" duration="4309000" />
+      <workItem from="1731849254402" duration="6496000" />
+      <workItem from="1731947502120" duration="4631000" />
+      <workItem from="1731955951212" duration="81000" />
+      <workItem from="1732096284537" duration="731000" />
+      <workItem from="1732099327367" duration="3742000" />
+      <workItem from="1732108129026" duration="199000" />
+      <workItem from="1732108966188" duration="3000" />
+      <workItem from="1732109040859" duration="5499000" />
+      <workItem from="1732121150375" duration="5571000" />
+      <workItem from="1732194902429" duration="19774000" />
+      <workItem from="1732359044694" duration="23291000" />
+      <workItem from="1732439622914" duration="16082000" />
+      <workItem from="1732557070607" duration="608000" />
+      <workItem from="1732644867527" duration="33000" />
+      <workItem from="1732726363031" duration="6866000" />
+      <workItem from="1732801864344" duration="17511000" />
+      <workItem from="1732964267310" duration="19403000" />
+      <workItem from="1732984647800" duration="2455000" />
+      <workItem from="1733044776764" duration="14700000" />
+      <workItem from="1733147787000" duration="635000" />
+      <workItem from="1733234473846" duration="7498000" />
+      <workItem from="1733299999295" duration="490000" />
+    </task>
+    <task id="LOCAL-00001" summary="test1">
+      <option name="closed" value="true" />
+      <created>1731345727195</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1731345727195</updated>
+    </task>
+    <task id="LOCAL-00002" summary="test1">
+      <option name="closed" value="true" />
+      <created>1731346170415</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1731346170415</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Aggiunta della finestra di login bozza">
+      <option name="closed" value="true" />
+      <created>1731843096085</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1731843096085</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Aggiunta della finestra di login bozza">
+      <option name="closed" value="true" />
+      <created>1731850137955</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1731850137955</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Aggiunta della finestra di login bozza e inserimento mappa">
+      <option name="closed" value="true" />
+      <created>1731851596216</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1731851596216</updated>
+    </task>
+    <task id="LOCAL-00006" summary="funzioni aggiuntive">
+      <option name="closed" value="true" />
+      <created>1731956018567</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1731956018567</updated>
+    </task>
+    <task id="LOCAL-00007" summary="funzioni aggiuntive">
+      <option name="closed" value="true" />
+      <created>1732126763159</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1732126763159</updated>
+    </task>
+    <task id="LOCAL-00008" summary="ecosin + portal">
+      <option name="closed" value="true" />
+      <created>1732215839107</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1732215839107</updated>
+    </task>
+    <task id="LOCAL-00009" summary="ecosin + portale migliorato">
+      <option name="closed" value="true" />
+      <created>1732439876221</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1732439876221</updated>
+    </task>
+    <task id="LOCAL-00010" summary="automatizzazione dei dati">
+      <option name="closed" value="true" />
+      <created>1732819707069</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1732819707069</updated>
+    </task>
+    <task id="LOCAL-00011" summary="portale quasi completo">
+      <option name="closed" value="true" />
+      <created>1732977508947</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1732977508947</updated>
+    </task>
+    <task id="LOCAL-00012" summary="aggiunta dei pulsanti logout">
+      <option name="closed" value="true" />
+      <created>1732984397885</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1732984397885</updated>
+    </task>
+    <task id="LOCAL-00013" summary="aggiunta dei materiali">
+      <option name="closed" value="true" />
+      <created>1733052159852</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1733052159852</updated>
+    </task>
+    <task id="LOCAL-00014" summary="aggiunta dei materiali">
+      <option name="closed" value="true" />
+      <created>1733058989119</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1733058989119</updated>
+    </task>
+    <task id="LOCAL-00015" summary="portale">
+      <option name="closed" value="true" />
+      <created>1733060582010</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1733060582010</updated>
+    </task>
+    <task id="LOCAL-00016" summary="modifica del bottone">
+      <option name="closed" value="true" />
+      <created>1733234497939</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1733234497939</updated>
+    </task>
+    <task id="LOCAL-00017" summary="aggiunta del file requirements e connessione al mongodb">
+      <option name="closed" value="true" />
+      <created>1733300371598</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1733300371598</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial commit" />
+    <MESSAGE value="test" />
+    <MESSAGE value="Delete prova.txt" />
+    <MESSAGE value="test1" />
+    <MESSAGE value="Aggiunta della finestra di login bozza" />
+    <MESSAGE value="Aggiunta della finestra di login bozza e inserimento mappa" />
+    <MESSAGE value="funzioni aggiuntive" />
+    <MESSAGE value="ecosin + portal" />
+    <MESSAGE value="ecosin + portale migliorato" />
+    <MESSAGE value="automatizzazione dei dati" />
+    <MESSAGE value="portale quasi completo" />
+    <MESSAGE value="aggiunta dei pulsanti logout" />
+    <MESSAGE value="aggiunta dei materiali" />
+    <MESSAGE value="portale" />
+    <MESSAGE value="modifica del bottone" />
+    <MESSAGE value="aggiunta del file requirements e connessione al mongodb" />
+    <option name="LAST_COMMIT_MESSAGE" value="aggiunta del file requirements e connessione al mongodb" />
+  </component>
+</project>
