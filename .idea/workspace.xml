@@ -4,22 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="deca04d5-6c1e-4270-8bc4-5127a87cde4e" name="Changes" comment="portal">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/assets/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/assets/css/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/assets/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/assets/js/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/eco.py" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/eco.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/archive.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/archive.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/communications.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/communications.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/communications_archive.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/communications_archive.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/maintenance_archive.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/maintenance_archive.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/maintenance_todo.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/maintenance_todo.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/portal.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/portal.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/product.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/product.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/withdrawals_archive.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/withdrawals_archive.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/withdrawals_todo.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/withdrawals_todo.html" afterDir="false" />
-    </list>
+    <list default="true" id="deca04d5-6c1e-4270-8bc4-5127a87cde4e" name="Changes" comment="modifiche generali" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -186,7 +171,7 @@
       <workItem from="1733299999295" duration="1846000" />
       <workItem from="1733563203979" duration="1000" />
       <workItem from="1733563942083" duration="2726000" />
-      <workItem from="1733566986885" duration="4509000" />
+      <workItem from="1733566986885" duration="4709000" />
     </task>
     <task id="LOCAL-00001" summary="test1">
       <option name="closed" value="true" />
@@ -332,7 +317,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733302785154</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="modifiche generali">
+      <option name="closed" value="true" />
+      <created>1733571758060</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1733571758060</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -367,6 +360,7 @@
     <MESSAGE value="modifica del bottone" />
     <MESSAGE value="aggiunta del file requirements e connessione al mongodb" />
     <MESSAGE value="portal" />
-    <option name="LAST_COMMIT_MESSAGE" value="portal" />
+    <MESSAGE value="modifiche generali" />
+    <option name="LAST_COMMIT_MESSAGE" value="modifiche generali" />
   </component>
 </project>
