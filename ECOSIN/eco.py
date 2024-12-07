@@ -1,9 +1,10 @@
 import random
-
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, render_template, redirect, url_for, session, flash
 from flask_pymongo import PyMongo
+from flask import jsonify, request
 
+# Inizializzazione dell'app Flask
 app = Flask(__name__, static_folder='assets', template_folder='templates')
 
 # Configura la connessione a MongoDB
@@ -19,24 +20,24 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        # Cerca l'utente nel database
+        # Verifica se l'utente esiste nel database
         user = mongo.db.Utenti.find_one({"username": username})
 
-        # Verifica che l'utente esista e che la password corrisponda
+        # Confronta la password inserita con quella memorizzata
         if user and user['password'] == password:
-            session['username'] = username  # Salva l'utente nella sessione
-            return redirect(url_for('portal'))  # Redirige alla mappa dopo il login
+            session['username'] = username  # Salva il nome utente nella sessione
+            return redirect(url_for('portal'))  # Redirige alla pagina del portale
         else:
-            flash('Credenziali non valide!', 'error')
+            flash('Credenziali non valide!', 'error')  # Messaggio di errore
             return redirect(url_for('login'))
 
-    return render_template('login.html')
+    return render_template('login.html')  # Mostra il modulo di login
 
 
 # Route per il logout
 @app.route('/logout', methods=['POST'])
 def logout():
-    session.pop('username', None)
+    session.pop('username', None)  # Rimuove l'utente dalla sessione
     flash('Sei stato disconnesso con successo!', 'info')  # Messaggio di disconnessione
     return redirect(url_for('login'))
 
@@ -48,16 +49,17 @@ def portal():
     else:
         return redirect(url_for('login'))  # Se non è loggato, rimandalo al login
 
+# Route per la pagina della mappa
 @app.route('/map')
 def map_page():
     return render_template('map.html')  # La pagina della mappa
 
+# API per ottenere i dispositivi
 @app.route('/api/devices')
 def get_devices():
-    # Recupera tutte le posizioni dalla collezione Posizioni_Ecosin
+    # Recupera tutte le posizioni dei dispositivi dalla collezione Posizioni_Ecosin
     positions = mongo.db.Posizioni_Ecosin.find({}, {"_id": 0, "id_eco": 1, "latitudine": 1, "longitudine": 1, "id_ente": 1, "descrizione_ente": 1})
-    # Crea una lista dei dispositivi da restituire
-    devices_list = []
+    devices_list = []  # Lista dei dispositivi
     for position in positions:
         device_id = position.get('id_eco')
         if not device_id:
@@ -66,7 +68,7 @@ def get_devices():
         # Recupera lo stato del dispositivo dalla collezione Stato_Ecosin
         status = mongo.db.Stato_Ecosin.find_one({"id_eco": device_id})
 
-        # Se esiste uno stato per questo dispositivo, lo aggiungiamo
+        # Se esiste lo stato del dispositivo, lo aggiunge alla lista
         if status:
             devices_list.append({
                 "_id": device_id,  # Identificativo del dispositivo (id_eco)
@@ -84,7 +86,6 @@ def get_devices():
                 }
             })
     return jsonify({"devices": devices_list})
-
 from datetime import datetime, timedelta
 
 @app.route('/product/<device_id>')
@@ -93,28 +94,26 @@ def product_page(device_id):
     device = mongo.db.Posizioni_Ecosin.find_one({"id_eco": device_id})
 
     if device:
-        # Recupera lo stato del bidone dalla tabella Stato_Ecosin
+        # Recupera lo stato del bidone dalla collezione Stato_Ecosin
         stato = mongo.db.Stato_Ecosin.find_one({"id_eco": device_id})
 
         # Recupera informazioni sull'ente associato
         ente = mongo.db.Enti.find_one({"id_ente": device['id_ente']})
 
-        # Recupera l'ultima manutenzione
+        # Recupera l'ultima manutenzione, ordinata per data (più recente)
         ultima_manutenzione = mongo.db.Manutenzioni.find_one({"id_eco": device_id}, sort=[("data_man", -1)])
 
         # Calcola la prossima manutenzione (aggiungi 30 giorni all'ultima manutenzione)
         if ultima_manutenzione:
-            # Controlla se la data di manutenzione è una stringa o un oggetto datetime
             ultima_data = ultima_manutenzione['data_man']
 
+            # Se la data è un oggetto datetime, convertila in stringa
             if isinstance(ultima_data, datetime):
-                # Se è un oggetto datetime, convertilo in stringa
                 ultima_data_str = ultima_data.strftime("%Y-%m-%d")
             else:
-                # Se è già una stringa, usa direttamente
                 ultima_data_str = ultima_data
 
-            # Aggiungi 30 giorni alla data (simulato senza conversione a datetime)
+            # Aggiungi 30 giorni all'ultima manutenzione
             ultima_data_obj = datetime.strptime(ultima_data_str, "%Y-%m-%d")
             prossima_manutenzione = ultima_data_obj + timedelta(days=30)
             prossima_manutenzione = prossima_manutenzione.strftime("%Y-%m-%d")
@@ -130,44 +129,40 @@ def product_page(device_id):
             'vetro_scatola': stato.get('vetro_scatola', 0),
             'carta_scatola': stato.get('carta_scatola', 0)
         }
-
-        # Passa tutti i dati al template
+        # Passa i dati al template della pagina del prodotto
         return render_template('product.html', device=device, stato=stato, ente=ente,
                                ultima_manutenzione=ultima_manutenzione, prossima_manutenzione=prossima_manutenzione,
                                percentuali=percentuali)
     else:
+        # Se il dispositivo non esiste, restituisce un errore 404
         return "Prodotto non trovato", 404
 
-
-
-
-#----------------------------------------------------------------------------------------------------------------
 # Route per la pagina delle manutenzioni
 @app.route('/manutenzioni', methods=['GET', 'POST'])
 def maintenance_page():
-    # Recupero gli enti dal database
+    # Recupera gli enti dal database
     enti = mongo.db.Enti.find()  # Ottenere tutti gli enti
 
     # Calcola la data di domani
     tomorrow = (datetime.today() + timedelta(days=1)).date()  # Domani
 
     if request.method == 'POST':
-        # Recupera i dati dal form
-        id_ente = request.form.get('ente')  # L'utente seleziona l'id_ente direttamente
+        # Recupera i dati dal form (ente, azione, data e materiale)
+        id_ente = request.form.get('ente')
         azione = request.form.get('azione')
-        data_str = request.form.get('data')  # La data che l'utente inserisce
+        data_str = request.form.get('data')
         materiale = request.form.get('materiale')  # Tipo di materiale per ritiro (solo se necessario)
 
-        # Verifica che tutti i dati richiesti siano presenti
+        # Verifica che tutti i campi necessari siano compilati
         if not id_ente or not azione or not data_str or (azione == 'ritiro' and not materiale):
             flash('Per favore, compila tutti i campi!', 'error')
             return redirect(url_for('maintenance_page'))
 
-        # Converti la data dal formato stringa a un oggetto datetime
+        # Converte la data dal formato stringa a un oggetto datetime
         try:
             data = datetime.strptime(data_str, "%Y-%m-%d").date()
 
-            # Verifica che la data inserita sia maggiore o uguale a domani
+            # Verifica che la data sia almeno domani
             if data < tomorrow:
                 flash('La data deve essere successiva o uguale a domani.', 'error')
                 return redirect(url_for('maintenance_page'))
@@ -182,7 +177,7 @@ def maintenance_page():
             flash(f"L'ente con id {id_ente} non esiste.", "error")
             return redirect(url_for('maintenance_page'))
 
-        # Ottieni l'ID Eco corrispondente all'ente selezionato (id_ente <-> id_eco)
+        # Ottieni l'ID Eco associato all'ente
         posizione_eco = mongo.db.Posizioni_Ecosin.find_one({'id_ente': id_ente})
         if not posizione_eco:
             flash(f"Nessuna posizione ecosin trovata per l'ente {id_ente}.", "error")
@@ -190,43 +185,40 @@ def maintenance_page():
 
         id_eco = posizione_eco['id_eco']  # L'ID Eco corrispondente all'ente
 
-        # Recupera un manutentore esistente dalla collezione Manutentori
-        manutentori = list(mongo.db.Manutentori.find())  # Otteniamo tutti i manutentori
-
+        # Recupera un manutentore disponibile
+        manutentori = list(mongo.db.Manutentori.find())
         if not manutentori:
             flash("Nessun manutentore trovato nel database.", "error")
             return redirect(url_for('maintenance_page'))
 
         # Seleziona un manutentore casuale
         manutentore = random.choice(manutentori)
-        cf_man = manutentore['cf_man']  # Estrai il codice fiscale del manutentore
+        cf_man = manutentore['cf_man']
 
-        # Funzione per ottenere il prossimo codice per manutenzione o ritiro
+        # Funzione per generare un codice unico per manutenzione o ritiro
         def get_next_code(action):
             if action == 'manutenzione':
                 # Trova l'ultimo codice manutenzione nel database
                 last_code = mongo.db.Manutenzioni.find().sort('cod_man', -1).limit(1)
                 if last_code:
                     last_code = last_code[0]['cod_man']
-                    number = int(last_code[3:])  # Estrai il numero dal codice
+                    number = int(last_code[3:])
                     new_code = f"MAN{str(number + 1).zfill(2)}"
                 else:
-                    new_code = "MAN01"  # Se non ci sono manutenzioni, iniziamo da MAN01
+                    new_code = "MAN01"
             elif action == 'ritiro':
                 # Trova l'ultimo codice ritiro nel database
                 last_code = mongo.db.Ritiri.find().sort('cod_r', -1).limit(1)
                 if last_code:
                     last_code = last_code[0]['cod_r']
-                    number = int(last_code[3:])  # Estrai il numero dal codice
+                    number = int(last_code[3:])
                     new_code = f"RIT{str(number + 1).zfill(2)}"
                 else:
-                    new_code = "RIT01"  # Se non ci sono ritiri, iniziamo da RIT01
+                    new_code = "RIT01"
             return new_code
 
         # Genera il codice univoco per manutenzione o ritiro
         codice_univoco = get_next_code(azione)
-
-
 
         # A seconda dell'azione (manutenzione o ritiro), salva i dati nel database
         if azione == 'manutenzione':
@@ -249,7 +241,7 @@ def maintenance_page():
                 flash(f"Nessuno stato trovato per l'id {id_eco}.", "error")
                 return redirect(url_for('maintenance_page'))
 
-            # Gestione del tipo di materiale e verifica se il materiale è almeno al 90% nella scatola
+            # Verifica che la percentuale di materiale nella scatola sia almeno 90%
             if materiale == "PLASTICA":
                 scatola = stato.get('plastica_scatola', 0)
             elif materiale == "VETRO":
@@ -260,7 +252,6 @@ def maintenance_page():
                 flash("Tipo di materiale non valido", "error")
                 return redirect(url_for('maintenance_page'))
 
-            # Verifica che la percentuale nella scatola sia almeno 90%
             if scatola < 90:
                 flash('La scatola deve essere almeno al 90% per avviare il ritiro', 'error')
                 return redirect(url_for('maintenance_page'))
@@ -270,14 +261,14 @@ def maintenance_page():
                 'data_r': data_str,
                 'cf_man': cf_man,
                 'id_ente': id_ente,
-                'materiale': materiale  # Aggiungi il tipo di materiale
+                'materiale': materiale
             }
             mongo.db.Ritiri.insert_one(ritiro_data)
             flash('Ritiro registrato con successo!', 'success')
             # Crea la comunicazione per ritiro
             create_communication(id_ente, azione, data_str,materiale)
 
-            # Svuota la scatola dopo il ritiro (senza modificare il bidone)
+            # Svuota la scatola dopo il ritiro
             if materiale == "PLASTICA":
                 stato['plastica_scatola'] = 0
             elif materiale == "VETRO":
@@ -288,22 +279,17 @@ def maintenance_page():
             # Salva lo stato aggiornato nel database
             mongo.db.Stato_Ecosin.update_one({"id_eco": id_eco}, {"$set": stato})
 
-
         return redirect(url_for('maintenance_page'))
-
+    # Passa gli enti e la data di domani al template
     return render_template('maintenance.html', enti=enti, tomorrow=tomorrow)
 
-
-
-
-# Route per la pagina di manutenzioni da fare
+# Route per la pagina delle manutenzioni da fare
 @app.route('/maintenance_todo')
 def maintenance_todo():
     if 'username' in session:
-        # Ottieni la data odierna come stringa
         today = datetime.now().strftime("%Y-%m-%d")
 
-        # Query per unire Manutenzioni con Enti e Manutentori, e filtrare le date
+        # Recupera manutenzioni future unendo con Enti e Manutentori
         maintenances = mongo.db.Manutenzioni.aggregate([
             {
                 "$match": {
@@ -312,10 +298,10 @@ def maintenance_todo():
             },
             {
                 "$lookup": {
-                    "from": "Enti",  # Nome della collezione Enti
-                    "localField": "id_ente",  # Campo in Manutenzioni che fa riferimento a Enti
-                    "foreignField": "id_ente",  # Campo in Enti che corrisponde
-                    "as": "ente_info"  # Nome del campo di output per i dati uniti
+                    "from": "Enti",
+                    "localField": "id_ente",
+                    "foreignField": "id_ente",
+                    "as": "ente_info"
                 }
             },
             {
@@ -328,10 +314,10 @@ def maintenance_todo():
             },
             {
                 "$lookup": {
-                    "from": "Manutentori",  # Nome della collezione Manutentori
-                    "localField": "cf_man",  # Campo in Manutenzioni che fa riferimento a Manutentori
-                    "foreignField": "cf_man",  # Campo in Manutentori che corrisponde
-                    "as": "manutentore_info"  # Nome del campo di output per i dati uniti
+                    "from": "Manutentori",
+                    "localField": "cf_man",
+                    "foreignField": "cf_man",
+                    "as": "manutentore_info"
                 }
             },
             {
@@ -339,27 +325,28 @@ def maintenance_todo():
             },
             {
                 "$project": {
-                    "_id": 0,                 # Escludi il campo _id
-                    "cod_man": 1,             # Includi il codice manutenzione
-                    "data_man": 1,            # Includi la data della manutenzione
-                    "ente_nome": "$ente_info.nome_d",  # Nome dell'ente
-                    "manutentore_nome": "$manutentore_info.nome_m",  # Nome del manutentore
-                    "manutentore_cognome": "$manutentore_info.cognome_m"  # Cognome del manutentore
+                    "_id": 0,
+                    "cod_man": 1,
+                    "data_man": 1,
+                    "ente_nome": "$ente_info.nome_d",
+                    "manutentore_nome": "$manutentore_info.nome_m",
+                    "manutentore_cognome": "$manutentore_info.cognome_m"
                 }
             }
         ])
 
-        # Passa i dati al template
+        # Passa le manutenzioni al template
         return render_template('maintenance_todo.html', maintenances=maintenances)
     else:
         return redirect(url_for('login'))
 
-
+# Route per la pagina dei ritiri da fare
 @app.route('/withdrawals_todo')
 def withdrawals_todo():
     if 'username' in session:
         today = datetime.now().strftime("%Y-%m-%d")
 
+        # Recupera i ritiri futuri unendo con Enti e Manutentori
         withdrawals = mongo.db.Ritiri.aggregate([
             {
                 "$match": {
@@ -379,7 +366,7 @@ def withdrawals_todo():
             },
             {
                 "$sort": {
-                    "data_r": 1
+                    "data_r": 1 # Ordina per data di ritiro
                 }
             },
             {
@@ -401,7 +388,7 @@ def withdrawals_todo():
                     "ente_nome": "$ente_info.nome_d",
                     "manutentore_nome": "$manutentore_info.nome_m",
                     "manutentore_cognome": "$manutentore_info.cognome_m",
-                    "materiale": 1  # Visualizza direttamente il campo 'materiale' come stringa
+                    "materiale": 1
                 }
             }
         ])
@@ -410,12 +397,7 @@ def withdrawals_todo():
     else:
         return redirect(url_for('login'))
 
-
-
-
-#----------------------------------------------------------------------------------------------------------------
-
-#bozza sull'aggiornamento delle percentuali penso ufficiale
+# Funzione per aggiornare le percentuali dei bidoni
 def aggiorna_percentuali_bidone():
     dispositivi = mongo.db.Posizioni_Ecosin.find()
 
@@ -424,7 +406,7 @@ def aggiorna_percentuali_bidone():
         stato = mongo.db.Stato_Ecosin.find_one({"id_eco": id_eco})
 
         if stato:
-            # Randomizza quale parte del bidone deve essere aggiornata (plastica, vetro o carta)
+            # Seleziona casualmente quale stato del bidone aggiornare
             stato_bidone = random.choice(['plastica_bidone', 'vetro_bidone', 'carta_bidone'])
 
             # Incremento casuale tra 1 e 2 percento
@@ -432,7 +414,7 @@ def aggiorna_percentuali_bidone():
 
             stato_update = {}
 
-            # Incremento per lo stato selezionato del bidone (solo se non è già al 100%)
+            # Aggiorna solo se il valore nel bidone non è già al 100%
             if stato[stato_bidone] < 100:
                 stato_update[stato_bidone] = min(100, stato.get(stato_bidone, 0) + incremento_bidone)
 
@@ -443,25 +425,24 @@ def aggiorna_percentuali_bidone():
         else:
             print(f"Dispositivo {id_eco} non trovato.")
 
+# Funzione per avviare lo scheduler e aggiornare le percentuali
 def start_scheduler():
-    # Scheduler
     scheduler = BackgroundScheduler()
 
-    # Aggiorna il bidone in modo casuale
+    # Aggiorna il bidone in modo casuale ogni 10 minuti
     scheduler.add_job(func=aggiorna_percentuali_bidone, trigger="interval", minutes=10)
 
     scheduler.start()
 
-#bozza route dello sminuzzamento
+# Route per lo sminuzzamento del materiale
 @app.route('/product/sminuzza/<id_eco>/<tipo>', methods=['POST'])
 def sminuzza(id_eco, tipo):
-    # Recupera lo stato del dispositivo dal database
     stato = mongo.db.Stato_Ecosin.find_one({"id_eco": id_eco})
 
     if stato:
-        incremento_scatola = 0  # Variabile che conterrà il valore da aggiungere alla scatola
+        incremento_scatola = 0  # Valore da aggiungere alla scatola
 
-        # Gestisci il tipo di materiale (plastica, vetro, carta)
+        # Gestione sminuzzamento per plastica, vetro e carta
         if tipo == "plastica":
             plastica_bidone = stato['plastica_bidone']
             if plastica_bidone >= 80:
@@ -501,23 +482,19 @@ def sminuzza(id_eco, tipo):
         # Salva le modifiche nel database
         mongo.db.Stato_Ecosin.update_one({"id_eco": id_eco}, {"$set": stato})
 
-        # Restituisci una risposta di successo
         return jsonify({"status": "success", "message": f"Sminuzzamento completato per {tipo}. Aggiunto {incremento_scatola}% alla scatola."}), 200
 
-    # Se lo stato del dispositivo non viene trovato
     return jsonify({"status": "error", "message": "Dispositivo non trovato"}), 404
 
 
-
-#bozza route aggiornamento percentuali forse ufficiale
-from flask import jsonify, request
-
+#Route per le percentuali del dispositivo
 @app.route('/product/percentuali/<id_eco>', methods=['GET'])
 def get_percentuali(id_eco):
     # Cerca lo stato del dispositivo specificato tramite id_eco
     stato = mongo.db.Stato_Ecosin.find_one({"id_eco": id_eco})
 
     if stato:
+        # Recupera le percentuali di plastica, vetro e carta nei bidoni e nelle scatole
         percentuali = {
             'plastica_bidone': stato.get('plastica_bidone', 0),
             'vetro_bidone': stato.get('vetro_bidone', 0),
@@ -528,18 +505,15 @@ def get_percentuali(id_eco):
         }
         return jsonify(percentuali)
     else:
-        # Se il dispositivo non esiste, restituisci un errore
         return jsonify({"error": "Dispositivo non trovato"}), 404
 
-#se è possibile aggiugere il messaggio a schermo quando non puoi sminuzzare
 
-#bozza route ritiro e manutenzione
-
+#Route per avviare il ritiro di una scatola
 @app.route('/product/avvia_ritiro/<id_eco>', methods=['POST'])
 def avvia_ritiro(id_eco):
     if 'username' in session:
         try:
-            # Recupera il tipo di materiale dal body della richiesta
+            # Estrai il tipo di materiale dal body della richiesta
             data = request.get_json()
             tipo_materiale = data.get('tipo')
 
@@ -565,7 +539,7 @@ def avvia_ritiro(id_eco):
             if scatola < 90:
                 return jsonify({'success': False, 'error': 'La scatola deve essere almeno al 90% per avviare il ritiro'}), 400
 
-            # Logica per avviare il ritiro
+            # Recupera la posizione ecosin ed ente associato
             posizione_eco = mongo.db.Posizioni_Ecosin.find_one({'id_eco': id_eco})
             if not posizione_eco:
                 return jsonify({'success': False, 'error': f"Nessuna posizione ecosin trovata per l'id {id_eco}."}), 404
@@ -575,6 +549,7 @@ def avvia_ritiro(id_eco):
             if not ente:
                 return jsonify({'success': False, 'error': f"L'ente con id {id_ente} non esiste."}), 404
 
+            # Determina il prossimo giorno lavorativo
             def next_workday(date):
                 while date.weekday() >= 5:  # Sabato=5, Domenica=6
                     date += timedelta(days=1)
@@ -632,12 +607,12 @@ def avvia_ritiro(id_eco):
         return jsonify({'success': False, 'error': 'Utente non autenticato'}), 401
 
 
-
+#Route per avviare la manutenzione
 @app.route('/product/manutenzione/<id_eco>', methods=['POST'])
 def avvia_manutenzione(id_eco):
-    if 'username' in session:  # Verifica se l'utente è autenticato
+    if 'username' in session:
         try:
-            # Recupera i dati del dispositivo (eco) dal database
+            # Recupera i dati del dispositivo (eco)
             dispositivo = mongo.db.Posizioni_Ecosin.find_one({"id_eco": id_eco})
             if not dispositivo:
                 return jsonify({"success": False, "error": "Dispositivo non trovato"}), 404
@@ -662,14 +637,13 @@ def avvia_manutenzione(id_eco):
             next_day = datetime.now() + timedelta(days=1)
             data_manutenzione = next_workday(next_day).strftime("%Y-%m-%d")
 
-            # Genera il codice di manutenzione incrementando l'ultimo codice
             last_code = mongo.db.Manutenzioni.find().sort('cod_man', -1).limit(1)
             if last_code:
                 last_code = last_code[0]['cod_man']
-                number = int(last_code[3:])  # Estrai la parte numerica del codice
-                codice_univoco = f"MAN{str(number + 1).zfill(2)}"  # Incrementa il numero e riformatta
+                number = int(last_code[3:])
+                codice_univoco = f"MAN{str(number + 1).zfill(2)}"
             else:
-                codice_univoco = "MAN01"  # Se è la prima manutenzione
+                codice_univoco = "MAN01"
 
             # Inserisci i dati di manutenzione nel database
             manutenzione_data = {
@@ -683,8 +657,6 @@ def avvia_manutenzione(id_eco):
 
             create_communication(id_ente, azione='manutenzione', data_str=data_manutenzione, materiale = None)
 
-
-        # Restituisce una risposta di successo
             return jsonify({"success": True}), 200
         except Exception as e:
             print(f"Errore durante l'avvio della manutenzione: {e}")
@@ -692,17 +664,13 @@ def avvia_manutenzione(id_eco):
     else:
         return jsonify({"success": False, "error": "Utente non autenticato"}), 401
 
-
-
-#bozze route per comunicazioni,manutenzioni e archivio
 # Route per la pagina delle comunicazioni
 @app.route('/comunicazioni', methods=['GET', 'POST'])
 def communication_page():
     if 'username' in session:
-        # Ottieni la data odierna come stringa
         today = datetime.now().strftime("%Y-%m-%d")
 
-        # Query per unire Comunicazioni con Enti e filtrare per data
+        # Query aggregata per ottenere comunicazioni future con i dettagli dell'ente
         communications = mongo.db.Comunicazioni.aggregate([
             {
                 "$match": {
@@ -711,14 +679,14 @@ def communication_page():
             },
             {
                 "$lookup": {
-                    "from": "Enti",  # Nome della collezione Enti
-                    "localField": "id_ente",  # Campo in Comunicazioni che fa riferimento a Enti
-                    "foreignField": "id_ente",  # Campo in Enti che corrisponde
-                    "as": "ente_info"  # Nome del campo di output per i dati uniti
+                    "from": "Enti",
+                    "localField": "id_ente",
+                    "foreignField": "id_ente",
+                    "as": "ente_info"
                 }
             },
             {
-                "$unwind": "$ente_info"  # Separa i dati uniti (uno per ogni ente)
+                "$unwind": "$ente_info"
             },
             {
                 "$sort": {
@@ -727,16 +695,15 @@ def communication_page():
             },
             {
                 "$project": {
-                    "_id": 0,               # Escludi il campo _id
-                    "cod_m": 1,             # Includi il codice comunicazione
-                    "data_m": 1,            # Includi la data
-                    "messaggio": 1,         # Includi il messaggio
-                    "ente_nome": "$ente_info.nome_d"  # Nome dell'ente
+                    "_id": 0,
+                    "cod_m": 1,
+                    "data_m": 1,
+                    "messaggio": 1,
+                    "ente_nome": "$ente_info.nome_d"
                 }
             }
         ])
 
-        # Passa i dati al template
         return render_template('communications.html', communications=communications, logged_in=True)
     else:
         return redirect(url_for('login'))
@@ -757,9 +724,8 @@ def create_communication(id_ente, azione, data_str, materiale):
         if azione == 'manutenzione':
             message = f"PASSERA' IL GIORNO {data_str} UN NOSTRO INCARICATO PER LA MANUTENZIONE."
         elif azione == 'ritiro':
-                message = f"IL GIORNO {data_str} SI EFFETTUA IL RITIRO DEL/LA {materiale.upper()}."
+            message = f"IL GIORNO {data_str} SI EFFETTUA IL RITIRO DEL/LA {materiale.upper()}."
 
-        # Mostra i dati che stai cercando di inserire
         print(f"Comunicazione da inserire: Codice: {new_code}, Ente: {id_ente}, Data: {data_str}, Messaggio: {message}")
 
         # Crea il documento per la comunicazione
@@ -782,8 +748,6 @@ def create_communication(id_ente, azione, data_str, materiale):
     except Exception as e:
         print(f"Errore durante la creazione della comunicazione: {e}")
 
-
-
 # Route per la pagina dell'archivio
 @app.route('/archivio')
 def archive_page():
@@ -792,6 +756,7 @@ def archive_page():
     else:
         return redirect(url_for('login'))
 
+# Route per visualizzare gli archivi dei ritiri passati
 @app.route('/withdrawals_archive')
 def withdrawals_archive():
     if 'username' in session:
@@ -850,8 +815,7 @@ def withdrawals_archive():
     else:
         return redirect(url_for('login'))
 
-
-
+# Route per l'archivio delle comunicazioni
 @app.route('/communications_archive')
 def communications_archive():
     if 'username' in session:
@@ -897,6 +861,7 @@ def communications_archive():
     else:
         return redirect(url_for('login'))
 
+# Route per l'archivio delle manutenzioni
 @app.route('/maintenance_archive')
 def maintenance_archive():
     if 'username' in session:

@@ -14,48 +14,48 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            position: relative; /* Per posizionare il contenuto sopra il background */
+            position: relative;
             overflow: hidden;
         }
 
         /* Elemento per il background sfocato */
         .background-blur {
-            position: absolute; /* Fissa il background */
+            position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: url('../assets/css/images/comune.webp'); /* Sfondo comune per tutta la pagina */
+            background-image: url('../assets/css/images/comune.webp');
             background-size: cover;
             background-position: center;
-            filter: blur(5px); /* Sfocatura dello sfondo */
-            z-index: -1; /* Metti il background dietro tutto il contenuto */
+            filter: blur(5px);
+            z-index: -1;
         }
 
         /* Contenitore dei bottoni */
         .button-container {
             display: flex;
-            justify-content: center; /* Centra i bottoni orizzontalmente */
-            gap: 30px; /* Aumenta la distanza tra i bottoni */
-            max-width: 1000px; /* Larghezza massima del contenitore */
+            justify-content: center;
+            gap: 30px;
+            max-width: 1000px;
             width: 100%;
             text-align: center;
-            z-index: 1; /* Posiziona il contenuto sopra lo sfondo */
+            z-index: 1;
         }
 
         /* Stile per i bottoni */
         .button {
             position: relative;
             width: 100%;
-            height: 200px; /* Altezza del bottone */
-            background-size: cover !important; /* Blocca la dimensione dello sfondo */
-            background-position: center !important; /* Blocca la posizione dello sfondo */
+            height: 200px;
+            background-size: cover !important;
+            background-position: center !important;
             border: none;
             border-radius: 15px;
             cursor: pointer;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Aggiungi ombra al bottone */
-            overflow: hidden; /* Nasconde eventuali parti del bottone fuori dalla bordatura */
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Animazione solo su scala e ombra */
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
 
         /* Cambia il colore di sfondo per ogni bottone individualmente */

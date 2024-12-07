@@ -132,14 +132,10 @@
 <div class="background-blur"></div>
 
 <!-- Bottone di Logout -->
-    <form action="{{ url_for('logout') }}" method="POST">
-        <button type="submit" class="logout-button">Logout</button>
-    </form>
-
-
-
+<form action="{{ url_for('logout') }}" method="POST">
+    <button type="submit" class="logout-button">Logout</button>
+</form>
 <h1>Comunicazioni</h1>
-
 <!-- Visualizzazione dei messaggi di Flash -->
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
@@ -178,10 +174,6 @@
     {% endfor %}
     </tbody>
 </table>
-
-
-
-
 <!-- Scripts -->
 <script src="../assets/js/jquery.min.js"></script>
 <script src="../assets/js/jquery.dropotron.min.js"></script>
@@ -191,6 +183,5 @@
 <script src="../assets/js/breakpoints.min.js"></script>
 <script src="../assets/js/util.js"></script>
 <script src="../assets/js/main.js"></script>
-
 </body>
 </html>

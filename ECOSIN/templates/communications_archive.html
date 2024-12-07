@@ -135,35 +135,32 @@
 </form>
 <!-- Contenitore principale del contenuto -->
 
-    <h1>Archivio Comunicazioni</h1>
+<h1>Archivio Comunicazioni</h1>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Codice Comunicazione</th>
-            <th>Data</th>
-            <th>Messaggio</th>
-            <th>Ente</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for comm in communications %}
-        <tr>
-            <td>{{ comm['cod_m'] }}</td>
-            <td>{{ comm['data_m'] }}</td>
-            <td>{{ comm['messaggio'] }}</td>
-            <td>{{ comm['ente_nome'] }}</td>  <!-- Nome dell'ente invece di id_ente -->
-        </tr>
-        {% else %}
-        <tr>
-            <td colspan="4">Nessuna comunicazione disponibile.</td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-
-
+<table>
+    <thead>
+    <tr>
+        <th>Codice Comunicazione</th>
+        <th>Data</th>
+        <th>Messaggio</th>
+        <th>Ente</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for comm in communications %}
+    <tr>
+        <td>{{ comm['cod_m'] }}</td>
+        <td>{{ comm['data_m'] }}</td>
+        <td>{{ comm['messaggio'] }}</td>
+        <td>{{ comm['ente_nome'] }}</td>  <!-- Nome dell'ente invece di id_ente -->
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan="4">Nessuna comunicazione disponibile.</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 <!-- Scripts -->
 <script src="../assets/js/jquery.min.js"></script>
 <script src="../assets/js/jquery.dropotron.min.js"></script>

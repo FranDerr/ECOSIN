@@ -4,7 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="deca04d5-6c1e-4270-8bc4-5127a87cde4e" name="Changes" comment="aggiunta del file requirements e connessione al mongodb" />
+    <list default="true" id="deca04d5-6c1e-4270-8bc4-5127a87cde4e" name="Changes" comment="portal">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/assets/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/assets/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/assets/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/assets/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/eco.py" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/eco.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/archive.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/archive.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/communications.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/communications.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/communications_archive.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/communications_archive.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/maintenance_archive.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/maintenance_archive.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/maintenance_todo.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/maintenance_todo.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/portal.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/portal.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/product.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/product.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/withdrawals_archive.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/withdrawals_archive.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/withdrawals_todo.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/withdrawals_todo.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -59,7 +74,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -168,7 +183,10 @@
       <workItem from="1733044776764" duration="14700000" />
       <workItem from="1733147787000" duration="635000" />
       <workItem from="1733234473846" duration="7498000" />
-      <workItem from="1733299999295" duration="490000" />
+      <workItem from="1733299999295" duration="1846000" />
+      <workItem from="1733563203979" duration="1000" />
+      <workItem from="1733563942083" duration="2726000" />
+      <workItem from="1733566986885" duration="4509000" />
     </task>
     <task id="LOCAL-00001" summary="test1">
       <option name="closed" value="true" />
@@ -306,7 +324,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733300371598</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="portal">
+      <option name="closed" value="true" />
+      <created>1733302785154</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1733302785154</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -340,6 +366,7 @@
     <MESSAGE value="portale" />
     <MESSAGE value="modifica del bottone" />
     <MESSAGE value="aggiunta del file requirements e connessione al mongodb" />
-    <option name="LAST_COMMIT_MESSAGE" value="aggiunta del file requirements e connessione al mongodb" />
+    <MESSAGE value="portal" />
+    <option name="LAST_COMMIT_MESSAGE" value="portal" />
   </component>
 </project>
