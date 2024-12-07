@@ -99,16 +99,19 @@
 					<form method="post" action="#">
 						<div class="row gtr-50">
 							<div class="col-6 col-12-small">
-								<input name="name" id="name"placeholder="Nome" type="text" />
+								<label for="name">Nome</label>
+								<input name="name" id="name" placeholder="Nome" type="text" />
 							</div>
 							<div class="col-6 col-12-small">
-								<input name="email" id="email"placeholder="Email" type="text" />
+								<label for="email">Email</label>
+								<input name="email" id="email" placeholder="Email" type="email" />
 							</div>
 							<div class="col-12">
-								<textarea name="message" id="message"placeholder="Messaggio"></textarea>
+								<label for="message">Messaggio</label>
+								<textarea name="message" id="message" placeholder="Messaggio"></textarea>
 							</div>
 							<div class="col-12">
-								<a name="invia"href="#" class="button" onclick="sendmail ()">MANDA MESSAGGIO</a>
+								<a name="invia" href="#" class="button" onclick="sendmail()">MANDA MESSAGGIO</a>
 							</div>
 						</div>
 					</form>
@@ -116,7 +119,7 @@
 			</div>
 		</div>
 	</section>
-
+</div>
 	<button onclick="topFunction()" id="myBtn" title="Go to top">TORNA SU</button>
 
 	<!-- Script per il bottone di ritorno in cima -->

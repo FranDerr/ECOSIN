@@ -209,30 +209,53 @@
 	});
 
 })(jQuery);
-function sendmail(){
+function sendmail() {
+	// Raccogliere i valori dai campi del modulo
 	var name = $('#name').val();
 	var email = $('#email').val();
-	var subject = $('#Subject').val();
+	var subject = $('#Subject').val();  // Non viene utilizzato nel corpo dell'email, ma se ti serve puoi aggiungerlo
 	var message = $('#message').val();
-	var Body='Nome: '+name+'<br>Email: '+email+'<br>Messaggio: '+message;
+
+	// Validazione dei campi
+	if (!name || !email || !message) {
+		alert('Per favore, compila tutti i campi!');
+		return; // Ferma l'esecuzione della funzione se un campo è vuoto
+	}
+
+	// Validazione dell'email
+	var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+	if (!emailPattern.test(email)) {
+		alert('Per favore, inserisci un indirizzo email valido!');
+		return;
+	}
+
+	// Corpo del messaggio email
+	var Body = 'Nome: ' + name + '<br>Email: ' + email + '<br>Messaggio: ' + message;
+
+	// Invio dell'email utilizzando SMTPJS o altro servizio
 	Email.send({
-		SecureToken:"fbf31702-bb7f-4a4e-9c1c-4ccf17ee777f",
-		To: 'francescoderrico@hotmail.com',
-		From: "",
-		Subject: "NUOVO MESSAGGIO DA "+name,
+		SecureToken: "fbf31702-bb7f-4a4e-9c1c-4ccf17ee777f", // Il token di sicurezza
+		To: 'francescoderrico@hotmail.com', // Destinatario
+		From: 'mittente@example.com', // Mittente (specifica un indirizzo email valido)
+		Subject: "NUOVO MESSAGGIO DA " + name,
 		Body: Body
 	}).then(
-		message =>{
-			if(message=='OK'){
-				alert('LA TUA EMAIL É STATA INVIATA');
-			}
-			else{
-				console.error (message);
-				alert('LA TUA EMAIL NON É STATA INVIATA')
+		message => {
+			// Gestione della risposta
+			if (message == 'OK') {
+				alert('La tua email è stata inviata con successo!');
+				// Puoi anche resettare il modulo se vuoi
+				$('#name').val('');
+				$('#email').val('');
+				$('#message').val('');
+			} else {
+				console.error(message);  // Log dell'errore
+				alert('C\'è stato un errore nell\'invio dell\'email. Riprova più tardi.');
 			}
 		}
 	);
 }
+
 
 
 // Contenuto della finestra
