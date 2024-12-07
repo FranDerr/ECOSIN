@@ -17,18 +17,6 @@
 				<hr />
 				<p>IL FUTURO SOTTO CASA</p>
 			</header>
-			<footer>
-				<input class="showbutton" type="button" value="GUARDA" onclick="this.value=this.value=='GUARDA'?'CHIUDI':'GUARDA';">
-				<div class="nascondi"><div>
-					<div style="text-align:center" >
-						<br>
-						<video id="video1" width="800" controls>
-							<source src="../images/spot.mp4" type="video/mp4">
-							IL TUO BROWSER NON SOPPORTA QUESTO VIDEO!
-						</video>
-					</div>
-				</div></div>
-			</footer>
 		</div>
 
 		<!-- Nav -->
@@ -36,9 +24,15 @@
 			<ul>
 				<li><a href="index.html">HOME</a></li>
 				<li><a href="composition.html">PRODOTTO</a></li>
-				<li><a href="operationJ.html">FUNZIONAMENTO</a></li>
 				<li><a href="#contattaci">CONTATTACI</a></li>
 				<li><a href="http://127.0.0.1:5000">COMUNE</a></li>
+				<li>
+					<a href="">LINGUA</a>
+					<ul>
+						<li><a href="index.html">ITALIANO</a></li>
+						<li><a href="SITE.html">INGLESE</a></li>
+					</ul>
+				</li>
 			</ul>
 		</nav>
 	</div>
@@ -87,7 +81,7 @@
 				<h2>ECOSIN: LA SOLUZIONE A TUTTI QUESTI PROBLEMI</h2>
 			</header>
 			<p>
-				Il nostro prodotto ha l’obiettivo di contrastare lo sversamento illecito dei rifiuti, evitando che essi vengano bruciati o sotterrati avvelenando l’aria che respiriamo e le nostre terre. Ti sembra impossibile? Invece no. Con ECOSIN tutto è possibile. Hai mai pensato al percorso che fa il sacchetto di rifiuti che butti sotto casa?
+				Il nostro prodotto ha l’obiettivo di contrastare lo sversamento illecito dei rifiuti, evitando che essi vengano bruciati o sotterrati avvelenando l’aria che respiriamo e le nostre terre. Ti sembra impossibile? Invece no. Con ECOSIN tutto è possibile. Hai mai pensato al percorso che fa il rifiuto che butti sotto casa?
 			</p>
 			<footer>
 				<a href="composition.html" class="button">CONTINUA A LEGGERE</a>
@@ -100,37 +94,56 @@
 			<header>
 				<h2>HAI DOMANDE O VUOI COMMENTARCI?<strong>CONTATTACI</strong></h2>
 			</header>
+			<div class="col-6 col-12-medium">
+				<section>
+					<form method="post" action="#">
+						<div class="row gtr-50">
+							<div class="col-6 col-12-small">
+								<input name="name" id="name"placeholder="Nome" type="text" />
+							</div>
+							<div class="col-6 col-12-small">
+								<input name="email" id="email"placeholder="Email" type="text" />
+							</div>
+							<div class="col-12">
+								<textarea name="message" id="message"placeholder="Messaggio"></textarea>
+							</div>
+							<div class="col-12">
+								<a name="invia"href="#" class="button" onclick="sendmail ()">MANDA MESSAGGIO</a>
+							</div>
+						</div>
+					</form>
+				</section>
+			</div>
 		</div>
 	</section>
-</div>
 
-<button onclick="topFunction()" id="myBtn" title="Go to top">TORNA SU</button>
+	<button onclick="topFunction()" id="myBtn" title="Go to top">TORNA SU</button>
 
-<!-- Script per il bottone di ritorno in cima -->
-<script>
-	var mybutton = document.getElementById("myBtn");
-	window.onscroll = function() {scrollFunction()};
-	function scrollFunction() {
-		if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-			mybutton.style.display = "block";
-		} else {
-			mybutton.style.display = "none";
+	<!-- Script per il bottone di ritorno in cima -->
+	<script>
+		var mybutton = document.getElementById("myBtn");
+		window.onscroll = function() {scrollFunction()};
+		function scrollFunction() {
+			if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+				mybutton.style.display = "block";
+			} else {
+				mybutton.style.display = "none";
+			}
 		}
-	}
-	function topFunction() {
-		document.body.scrollTop = 0;
-		document.documentElement.scrollTop = 0;
-	}
-</script>
+		function topFunction() {
+			document.body.scrollTop = 0;
+			document.documentElement.scrollTop = 0;
+		}
+	</script>
 
-<!-- Scripts -->
-<script src="../assets/js/jquery.min.js"></script>
-<script src="../assets/js/jquery.dropotron.min.js"></script>
-<script src="../assets/js/jquery.scrolly.min.js"></script>
-<script src="../assets/js/jquery.scrollex.min.js"></script>
-<script src="../assets/js/browser.min.js"></script>
-<script src="../assets/js/breakpoints.min.js"></script>
-<script src="../assets/js/util.js"></script>
-<script src="../assets/js/main.js"></script>
+	<!-- Scripts -->
+	<script src="../assets/js/jquery.min.js"></script>
+	<script src="../assets/js/jquery.dropotron.min.js"></script>
+	<script src="../assets/js/jquery.scrolly.min.js"></script>
+	<script src="../assets/js/jquery.scrollex.min.js"></script>
+	<script src="../assets/js/browser.min.js"></script>
+	<script src="../assets/js/breakpoints.min.js"></script>
+	<script src="../assets/js/util.js"></script>
+	<script src="../assets/js/main.js"></script>
 </body>
 </html>

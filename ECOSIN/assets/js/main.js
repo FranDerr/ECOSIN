@@ -217,7 +217,7 @@ function sendmail(){
 	var Body='Nome: '+name+'<br>Email: '+email+'<br>Messaggio: '+message;
 	Email.send({
 		SecureToken:"fbf31702-bb7f-4a4e-9c1c-4ccf17ee777f",
-		To: '',
+		To: 'francescoderrico@hotmail.com',
 		From: "",
 		Subject: "NUOVO MESSAGGIO DA "+name,
 		Body: Body

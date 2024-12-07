@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="deca04d5-6c1e-4270-8bc4-5127a87cde4e" name="Changes" comment="modifiche generali" />
+    <list default="true" id="deca04d5-6c1e-4270-8bc4-5127a87cde4e" name="Changes" comment="modifiche generali">
+      <change afterPath="$PROJECT_DIR$/ECOSIN/static/PRODUCT.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ECOSIN/static/SITE.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/assets/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/assets/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/static/composition.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/static/composition.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/static/operationJ.html" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,32 +52,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;JavaScript Debug.SITO.html.executor&quot;: &quot;Run&quot;,
-    &quot;JavaScript Debug.login.html.executor&quot;: &quot;Run&quot;,
-    &quot;Python.app.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Pc/WebstormProjects/ECOSIN/ECOSIN/assets/css/images&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JavaScript Debug.SITO.html.executor": "Run",
+    "JavaScript Debug.login.html.executor": "Run",
+    "Notification.DisplayName-DoNotAsk-GitHub Copilot": "GitHub Copilot",
+    "Notification.DoNotAsk-GitHub Copilot": "true",
+    "Python.app.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/Pc/WebstormProjects/ECOSIN/ECOSIN/static",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mongo&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mongo"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Pc\WebstormProjects\ECOSIN\ECOSIN\static" />
       <recent name="C:\Users\Pc\WebstormProjects\ECOSIN\ECOSIN\assets\css\images" />
       <recent name="C:\Users\Pc\WebstormProjects\ECOSIN\ECOSIN\templates" />
       <recent name="C:\Users\Pc\WebstormProjects\ECOSIN\ECOSIN\assets\js" />
@@ -170,6 +181,8 @@
       <workItem from="1733563203979" duration="1000" />
       <workItem from="1733563942083" duration="2726000" />
       <workItem from="1733566986885" duration="4709000" />
+      <workItem from="1733571839780" duration="640000" />
+      <workItem from="1733576185038" duration="2841000" />
     </task>
     <task id="LOCAL-00001" summary="test1">
       <option name="closed" value="true" />
@@ -323,11 +336,31 @@
       <option name="project" value="LOCAL" />
       <updated>1733571758060</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="modifiche generali">
+      <option name="closed" value="true" />
+      <created>1733571875699</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1733571875699</updated>
+    </task>
+    <task id="LOCAL-00021" summary="modifiche generali">
+      <option name="closed" value="true" />
+      <created>1733571932535</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1733571932535</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.facetType" implementationName="Python" />
+    <option featureType="com.intellij.configurationType" implementationName="PythonConfigurationType" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
