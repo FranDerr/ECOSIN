@@ -8,7 +8,7 @@ from flask import jsonify, request
 app = Flask(__name__, static_folder='assets', template_folder='templates')
 
 # Configura la connessione a MongoDB
-app.config["MONGO_URI"] = "mongodb+srv://ECOSIN:ECOSINproject@ecosin.p1ac6.mongodb.net/ECOSIN?retryWrites=true&w=majority"
+app.config["MONGO_URI"] = "mongodb+srv://ECOSIN:ECOSINproject@ecosin.p1ac6.mongodb.net/ECOSIN?retryWrites=true&w=majority&ssl=true&tlsAllowInvalidCertificates=true"
 mongo = PyMongo(app)
 
 app.secret_key = 'secret_key_12345'
