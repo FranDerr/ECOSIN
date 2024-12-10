@@ -921,3 +921,7 @@ def maintenance_archive():
 if __name__ == '__main__':
     start_scheduler()
     app.run(debug=True)
+
+# Copyright (c) 2024 ECOSIN
+# This file is part of a project licensed under the MIT License.
+# See the LICENSE file in the project root for more information.
