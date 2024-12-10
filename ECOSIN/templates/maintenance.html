@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestione Manutenzioni</title>
+    <title>Maintenance</title>
     <link rel="stylesheet" href="../assets/css/main.css" />
     <noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
     <style>
@@ -263,7 +263,7 @@
 <div class="container">
     <!-- Form principale -->
     <div class="main-container">
-        <h1>Gestione Manutenzioni</h1>
+        <h1>Maintenance Management</h1>
         <!-- Visualizzazione dei messaggi di Flash -->
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -278,9 +278,9 @@
         {% endwith %}
         <form method="POST">
             <div class="form-section">
-                <label for="ente">Seleziona Ente</label>
+                <label for="ente">Select Entity</label>
                 <select id="ente" name="ente" required>
-                    <option value="" disabled selected>Seleziona un ente...</option>
+                    <option value="" disabled selected>Select an entity...</option>
                     {% for ente in enti %}
                     <option value="{{ ente.id_ente }}">{{ ente['nome_d'] }}</option>
                     {% endfor %}
@@ -288,30 +288,30 @@
             </div>
 
             <div class="form-section">
-                <label for="azione">Seleziona Azione</label>
+                <label for="azione">Select Action</label>
                 <select id="azione" name ="azione" required>
-                    <option value="" disabled selected>Scegli tra Manutenzione e Ritiro...</option>
-                    <option value="manutenzione">Manutenzione</option>
-                    <option value="ritiro">Ritiro</option>
+                    <option value="" disabled selected>Choose between Maintenance and Withdraw...</option>
+                    <option value="manutenzione">Maintenance</option>
+                    <option value="ritiro">Withdraw</option>
                 </select>
             </div>
             <div class="form-section" id="material-section" style="display: none;">
-                <label for="materiale">Seleziona Materiale</label>
+                <label for="materiale">Select Material</label>
                 <select id="materiale" name="materiale">
-                    <option value="" disabled selected>Seleziona il materiale...</option>
-                    <option value="PLASTICA">Plastica</option>
-                    <option value="VETRO">Vetro</option>
-                    <option value="CARTA">Carta</option>
+                    <option value="" disabled selected>Select the material...</option>
+                    <option value="PLASTIC">Plastic</option>
+                    <option value="GLASS">Glass</option>
+                    <option value="PAPER">Paper</option>
                 </select>
             </div>
 
             <div class="form-section">
-                <label for="data">Inserisci Data</label>
+                <label for="data">Enter Date</label>
                 <input type="date" id="data" name ="data" required min="{{tomorrow }}">
             </div>
 
             <div class="form-section">
-                <button id="invia">Invia</button>
+                <button id="invia">Send</button>
 
             </div>
         </form>
@@ -321,10 +321,10 @@
     <div class="sidebar">
         <div class="button-container">
             <a href="{{ url_for('maintenance_todo') }}" class="button mappa">
-                <span class="button-text">Manutenzioni da fare</span>
+                <span class="button-text">Maintenance to do</span>
             </a>
             <a href="{{ url_for('withdrawals_todo') }}" class="button comunicazioni">
-                <span class="button-text">Ritiri da fare</span>
+                <span class="button-text">Withdrawals to do</span>
             </a>
         </div>
     </div>

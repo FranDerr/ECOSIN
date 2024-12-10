@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <title>ECOSIN - Archivio Ritiri</title>
+    <title>ECOSIN - Withdrawals Archive</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="../assets/css/main.css" />
@@ -116,16 +116,16 @@
 <form action="{{ url_for('logout') }}" method="POST">
     <button type="submit" class="logout-button">Logout</button>
 </form>
-<h1>Archivio Ritiri</h1>
+<h1>Withdrawals Archive</h1>
 
 <table>
     <thead>
     <tr>
-        <th>Codice Ritiro</th>
-        <th>Data</th>
-        <th>Responsabile</th>
-        <th>Ente</th>
-        <th>Materiale</th> <!-- Nuova colonna -->
+        <th>Withdrawal Code</th>
+        <th>Date</th>
+        <th>Responsible</th>
+        <th>Entity</th>
+        <th>Material</th>
     </tr>
     </thead>
     <tbody>
@@ -135,11 +135,11 @@
         <td>{{ ritiro['data_r'] }}</td>
         <td>{{ ritiro['manutentore_nome'] }} {{ ritiro['manutentore_cognome'] }}</td>
         <td>{{ ritiro['ente_nome'] }}</td>
-        <td>{{ ritiro['materiale']|upper }}</td> <!-- Nuova colonna -->
+        <td>{{ ritiro['materiale']|upper }}</td>
     </tr>
     {% else %}
     <tr>
-        <td colspan="5">Nessun ritiro disponibile.</td> <!-- Aggiorna il colspan -->
+        <td colspan="5">No withdraw available.</td>
     </tr>
     {% endfor %}
     </tbody>

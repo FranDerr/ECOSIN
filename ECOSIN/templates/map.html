@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ECOSIN</title>
+    <title>ECOSIN - Map</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="../assets/css/main.css" />
@@ -100,21 +100,21 @@
                     const infoContent = `
                         <div class="info-content">
                             <h3>${device.nome}</h3>
-                            <p><b>Ente:</b> ${device.descrizione_ente}</p>
-                            <p><b>Stato Bidoni:</b></p>
+                            <p><b>Entity:</b> ${device.descrizione_ente}</p>
+                            <p><b>State of the bin:</b></p>
                             <ul>
-                                <li><b>Plastica Bidone:</b> ${device.stato.PLASTICA_BIDONE}%</li>
-                                <li><b>Vetro Bidone:</b> ${device.stato.VETRO_BIDONE}%</li>
-                                <li><b>Carta Bidone:</b> ${device.stato.CARTA_BIDONE}%</li>
+                                <li><b>Plastic bin:</b> ${device.stato.PLASTICA_BIDONE}%</li>
+                                <li><b>Glass bin:</b> ${device.stato.VETRO_BIDONE}%</li>
+                                <li><b>Paper bin:</b> ${device.stato.CARTA_BIDONE}%</li>
                             </ul>
-                            <p><b>Stato Scatole:</b></p>
+                            <p><b>Box status:</b></p>
                             <ul>
-                                <li><b>Plastica Scatola:</b> ${device.stato.PLASTICA_SCATOLA}%</li>
-                                <li><b>Vetro Scatola:</b> ${device.stato.VETRO_SCATOLA}%</li>
-                                <li><b>Carta Scatola:</b> ${device.stato.CARTA_SCATOLA}%</li>
+                                <li><b>Plastic box:</b> ${device.stato.PLASTICA_SCATOLA}%</li>
+                                <li><b>Glass box:</b> ${device.stato.VETRO_SCATOLA}%</li>
+                                <li><b>Paper box:</b> ${device.stato.CARTA_SCATOLA}%</li>
                             </ul>
                             <button onclick="window.location.href='/product/${device._id}'" style="padding: 5px 10px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                                Vedi Altro
+                                See More
                             </button>
                         </div>
                     `;
@@ -140,8 +140,8 @@
                 });
             })
             .catch(error => {
-                console.error("Errore nel caricamento dei dispositivi:", error);
-                alert("Impossibile caricare i dispositivi. Riprova più tardi.");
+                console.error("Error loading devices:", error);
+                alert("Failed to load devices. Please try again later.");
             });
     }
 

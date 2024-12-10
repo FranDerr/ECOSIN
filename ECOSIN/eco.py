@@ -28,7 +28,7 @@ def login():
             session['username'] = username  # Salva il nome utente nella sessione
             return redirect(url_for('portal'))  # Redirige alla pagina del portale
         else:
-            flash('Credenziali non valide!', 'error')  # Messaggio di errore
+            flash('Invalid credentials!', 'error')  # Messaggio di errore
             return redirect(url_for('login'))
 
     return render_template('login.html')  # Mostra il modulo di login
@@ -38,7 +38,7 @@ def login():
 @app.route('/logout', methods=['POST'])
 def logout():
     session.pop('username', None)  # Rimuove l'utente dalla sessione
-    flash('Sei stato disconnesso con successo!', 'info')  # Messaggio di disconnessione
+    flash('You have been successfully logged out!', 'info')  # Messaggio di disconnessione
     return redirect(url_for('login'))
 
 # Route per la pagina del portale
@@ -118,7 +118,7 @@ def product_page(device_id):
             prossima_manutenzione = ultima_data_obj + timedelta(days=30)
             prossima_manutenzione = prossima_manutenzione.strftime("%Y-%m-%d")
         else:
-            prossima_manutenzione = "Non disponibile"
+            prossima_manutenzione = "Not available"
 
         # Calcola le percentuali per ciascun stato del bidone e della scatola
         percentuali = {
@@ -135,7 +135,7 @@ def product_page(device_id):
                                percentuali=percentuali)
     else:
         # Se il dispositivo non esiste, restituisce un errore 404
-        return "Prodotto non trovato", 404
+        return "Product not found", 404
 
 # Route per la pagina delle manutenzioni
 @app.route('/manutenzioni', methods=['GET', 'POST'])
@@ -155,7 +155,7 @@ def maintenance_page():
 
         # Verifica che tutti i campi necessari siano compilati
         if not id_ente or not azione or not data_str or (azione == 'ritiro' and not materiale):
-            flash('Per favore, compila tutti i campi!', 'error')
+            flash('Please fill in all fields!', 'error')
             return redirect(url_for('maintenance_page'))
 
         # Converte la data dal formato stringa a un oggetto datetime
@@ -164,23 +164,23 @@ def maintenance_page():
 
             # Verifica che la data sia almeno domani
             if data < tomorrow:
-                flash('La data deve essere successiva o uguale a domani.', 'error')
+                flash('The date must be after or equal to tomorrow.', 'error')
                 return redirect(url_for('maintenance_page'))
 
         except ValueError:
-            flash('Formato data non valido.', 'error')
+            flash('Invalid date format.', 'error')
             return redirect(url_for('maintenance_page'))
 
         # Verifica che l'ente esista nel database
         ente = mongo.db.Enti.find_one({'id_ente': id_ente})
         if not ente:
-            flash(f"L'ente con id {id_ente} non esiste.", "error")
+            flash(f"The entity with ID  {id_ente} not exists.", "error")
             return redirect(url_for('maintenance_page'))
 
         # Ottieni l'ID Eco associato all'ente
         posizione_eco = mongo.db.Posizioni_Ecosin.find_one({'id_ente': id_ente})
         if not posizione_eco:
-            flash(f"Nessuna posizione ecosin trovata per l'ente {id_ente}.", "error")
+            flash(f"No ecosin positions found for the entity {id_ente}.", "error")
             return redirect(url_for('maintenance_page'))
 
         id_eco = posizione_eco['id_eco']  # L'ID Eco corrispondente all'ente
@@ -188,7 +188,7 @@ def maintenance_page():
         # Recupera un manutentore disponibile
         manutentori = list(mongo.db.Manutentori.find())
         if not manutentori:
-            flash("Nessun manutentore trovato nel database.", "error")
+            flash("No maintainers found in the database.", "error")
             return redirect(url_for('maintenance_page'))
 
         # Seleziona un manutentore casuale
@@ -230,7 +230,7 @@ def maintenance_page():
                 'id_ente': id_ente
             }
             mongo.db.Manutenzioni.insert_one(manutenzione_data)
-            flash('Manutenzione registrata con successo!', 'success')
+            flash('Maintenance successfully recorded!', 'success')
             # Crea la comunicazione per manutenzione
             create_communication(id_ente, azione, data_str,materiale=None)
 
@@ -238,22 +238,22 @@ def maintenance_page():
             # Recupera lo stato del dispositivo dal database
             stato = mongo.db.Stato_Ecosin.find_one({"id_eco": id_eco})
             if not stato:
-                flash(f"Nessuno stato trovato per l'id {id_eco}.", "error")
+                flash(f"No status found for the id {id_eco}.", "error")
                 return redirect(url_for('maintenance_page'))
 
             # Verifica che la percentuale di materiale nella scatola sia almeno 90%
-            if materiale == "PLASTICA":
+            if materiale == "PLASTIC":
                 scatola = stato.get('plastica_scatola', 0)
-            elif materiale == "VETRO":
+            elif materiale == "GLASS":
                 scatola = stato.get('vetro_scatola', 0)
-            elif materiale == "CARTA":
+            elif materiale == "PAPER":
                 scatola = stato.get('carta_scatola', 0)
             else:
-                flash("Tipo di materiale non valido", "error")
+                flash("Invalid material type", "error")
                 return redirect(url_for('maintenance_page'))
 
             if scatola < 90:
-                flash('La scatola deve essere almeno al 90% per avviare il ritiro', 'error')
+                flash('The box must be at least 90% full to start the withdraw', 'error')
                 return redirect(url_for('maintenance_page'))
             ritiro_data = {
                 'cod_r': codice_univoco,
@@ -264,16 +264,16 @@ def maintenance_page():
                 'materiale': materiale
             }
             mongo.db.Ritiri.insert_one(ritiro_data)
-            flash('Ritiro registrato con successo!', 'success')
+            flash('Withdrawal successfully registered!', 'success')
             # Crea la comunicazione per ritiro
             create_communication(id_ente, azione, data_str,materiale)
 
             # Svuota la scatola dopo il ritiro
-            if materiale == "PLASTICA":
+            if materiale == "PLASTIC":
                 stato['plastica_scatola'] = 0
-            elif materiale == "VETRO":
+            elif materiale == "GLASS":
                 stato['vetro_scatola'] = 0
-            elif materiale == "CARTA":
+            elif materiale == "PAPER":
                 stato['carta_scatola'] = 0
 
             # Salva lo stato aggiornato nel database
@@ -421,9 +421,9 @@ def aggiorna_percentuali_bidone():
             # Aggiorna il database con il nuovo stato del bidone
             if stato_update:
                 mongo.db.Stato_Ecosin.update_one({"id_eco": id_eco}, {"$set": stato_update})
-                print(f"Percentuale del bidone aggiornata per {id_eco}: {stato_update}")
+                print(f"Updated bin percentage for {id_eco}: {stato_update}")
         else:
-            print(f"Dispositivo {id_eco} non trovato.")
+            print(f"Device {id_eco} not found.")
 
 # Funzione per avviare lo scheduler e aggiornare le percentuali
 def start_scheduler():
@@ -443,7 +443,7 @@ def sminuzza(id_eco, tipo):
         incremento_scatola = 0  # Valore da aggiungere alla scatola
 
         # Gestione sminuzzamento per plastica, vetro e carta
-        if tipo == "plastica":
+        if tipo == "plastic":
             plastica_bidone = stato['plastica_bidone']
             if plastica_bidone >= 80:
                 if plastica_bidone < 90:
@@ -453,9 +453,9 @@ def sminuzza(id_eco, tipo):
                 stato['plastica_bidone'] = 0  # Svuota il bidone
                 stato['plastica_scatola'] += incremento_scatola  # Aggiungi il valore calcolato alla scatola
             else:
-                return jsonify({"status": "error", "message": "Sminuzzamento non consentito, la plastica deve essere almeno al 80%"}), 400
+                return jsonify({"status": "error", "message": "Shredding not allowed, plastic must be at least 80%"}), 400
 
-        elif tipo == "vetro":
+        elif tipo == "glass":
             vetro_bidone = stato['vetro_bidone']
             if vetro_bidone >= 80:
                 if vetro_bidone < 90:
@@ -465,9 +465,9 @@ def sminuzza(id_eco, tipo):
                 stato['vetro_bidone'] = 0  # Svuota il bidone
                 stato['vetro_scatola'] += incremento_scatola  # Aggiungi il valore calcolato alla scatola
             else:
-                return jsonify({"status": "error", "message": "Sminuzzamento non consentito, il vetro deve essere almeno al 80%"}), 400
+                return jsonify({"status": "error", "message": "Shredding not allowed, glass must be at least 80%"}), 400
 
-        elif tipo == "carta":
+        elif tipo == "paper":
             carta_bidone = stato['carta_bidone']
             if carta_bidone >= 80:
                 if carta_bidone < 90:
@@ -477,14 +477,14 @@ def sminuzza(id_eco, tipo):
                 stato['carta_bidone'] = 0  # Svuota il bidone
                 stato['carta_scatola'] += incremento_scatola  # Aggiungi il valore calcolato alla scatola
             else:
-                return jsonify({"status": "error", "message": "Sminuzzamento non consentito, la carta deve essere almeno al 80%"}), 400
+                return jsonify({"status": "error", "message": "Shredding not allowed, paper must be at least 80%"}), 400
 
         # Salva le modifiche nel database
         mongo.db.Stato_Ecosin.update_one({"id_eco": id_eco}, {"$set": stato})
 
-        return jsonify({"status": "success", "message": f"Sminuzzamento completato per {tipo}. Aggiunto {incremento_scatola}% alla scatola."}), 200
+        return jsonify({"status": "success", "message": f"Shredding completed for {tipo}. Added {incremento_scatola}% at box."}), 200
 
-    return jsonify({"status": "error", "message": "Dispositivo non trovato"}), 404
+    return jsonify({"status": "error", "message": "Device not found"}), 404
 
 
 #Route per le percentuali del dispositivo
@@ -505,7 +505,7 @@ def get_percentuali(id_eco):
         }
         return jsonify(percentuali)
     else:
-        return jsonify({"error": "Dispositivo non trovato"}), 404
+        return jsonify({"error": "Device not found"}), 404
 
 
 #Route per avviare il ritiro di una scatola
@@ -518,36 +518,36 @@ def avvia_ritiro(id_eco):
             tipo_materiale = data.get('tipo')
 
             if not tipo_materiale:
-                return jsonify({'success': False, 'error': 'Tipo di materiale non fornito'}), 400
+                return jsonify({'success': False, 'error': 'Type of material not supplied'}), 400
 
             # Recupera lo stato del dispositivo dal database
             stato = mongo.db.Stato_Ecosin.find_one({"id_eco": id_eco})
             if not stato:
-                return jsonify({'success': False, 'error': f"Nessun stato trovato per l'id {id_eco}."}), 404
+                return jsonify({'success': False, 'error': f"No status found for the id {id_eco}."}), 404
 
             # Gestione del tipo di materiale e verifica se il materiale è almeno al 90% nella scatola
-            if tipo_materiale == "plastica":
+            if tipo_materiale == "plastic":
                 scatola = stato.get('plastica_scatola', 0)
-            elif tipo_materiale == "vetro":
+            elif tipo_materiale == "glass":
                 scatola = stato.get('vetro_scatola', 0)
-            elif tipo_materiale == "carta":
+            elif tipo_materiale == "paper":
                 scatola = stato.get('carta_scatola', 0)
             else:
-                return jsonify({'success': False, 'error': 'Tipo di materiale non valido'}), 400
+                return jsonify({'success': False, 'error': 'Invalid material type'}), 400
 
             # Verifica che la percentuale nella scatola sia almeno 90%
             if scatola < 90:
-                return jsonify({'success': False, 'error': 'La scatola deve essere almeno al 90% per avviare il ritiro'}), 400
+                return jsonify({'success': False, 'error': 'The box must be at least 90% full to start the collection'}), 400
 
             # Recupera la posizione ecosin ed ente associato
             posizione_eco = mongo.db.Posizioni_Ecosin.find_one({'id_eco': id_eco})
             if not posizione_eco:
-                return jsonify({'success': False, 'error': f"Nessuna posizione ecosin trovata per l'id {id_eco}."}), 404
+                return jsonify({'success': False, 'error': f"No ecosin positions found for the id {id_eco}."}), 404
 
             id_ente = posizione_eco['id_ente']
             ente = mongo.db.Enti.find_one({'id_ente': id_ente})
             if not ente:
-                return jsonify({'success': False, 'error': f"L'ente con id {id_ente} non esiste."}), 404
+                return jsonify({'success': False, 'error': f"The entity with id {id_ente} doesn't exist."}), 404
 
             # Determina il prossimo giorno lavorativo
             def next_workday(date):
@@ -561,7 +561,7 @@ def avvia_ritiro(id_eco):
             # Seleziona un manutentore casuale
             manutentori = list(mongo.db.Manutentori.find())
             if not manutentori:
-                return jsonify({'success': False, 'error': "Nessun manutentore trovato nel database."}), 500
+                return jsonify({'success': False, 'error': "No maintainers found in the database."}), 500
             manutentore = random.choice(manutentori)
             cf_man = manutentore['cf_man']
 
@@ -589,11 +589,11 @@ def avvia_ritiro(id_eco):
             create_communication(id_ente, azione='ritiro', data_str=data_ritiro, materiale=tipo_materiale)
 
             # Svuota la scatola dopo il ritiro (senza modificare il bidone)
-            if tipo_materiale == "plastica":
+            if tipo_materiale == "plastic":
                 stato['plastica_scatola'] = 0
-            elif tipo_materiale == "vetro":
+            elif tipo_materiale == "glass":
                 stato['vetro_scatola'] = 0
-            elif tipo_materiale == "carta":
+            elif tipo_materiale == "paper":
                 stato['carta_scatola'] = 0
 
             # Salva lo stato aggiornato nel database
@@ -604,7 +604,7 @@ def avvia_ritiro(id_eco):
         except Exception as e:
             return jsonify({'success': False, 'error': str(e)}), 500
     else:
-        return jsonify({'success': False, 'error': 'Utente non autenticato'}), 401
+        return jsonify({'success': False, 'error': 'User not authenticated'}), 401
 
 
 #Route per avviare la manutenzione
@@ -615,17 +615,17 @@ def avvia_manutenzione(id_eco):
             # Recupera i dati del dispositivo (eco)
             dispositivo = mongo.db.Posizioni_Ecosin.find_one({"id_eco": id_eco})
             if not dispositivo:
-                return jsonify({"success": False, "error": "Dispositivo non trovato"}), 404
+                return jsonify({"success": False, "error": "Device not found"}), 404
 
             # Recupera l'ente associato al dispositivo
             id_ente = dispositivo['id_ente']
             ente = mongo.db.Enti.find_one({"id_ente": id_ente})
             if not ente:
-                return jsonify({"success": False, "error": "Ente non trovato"}), 404
+                return jsonify({"success": False, "error": "Entity not found"}), 404
 
             manutentori = list(mongo.db.Manutentori.find())
             if not manutentori:
-                return jsonify({'success': False, 'error': "Nessun manutentore trovato nel database."}), 500
+                return jsonify({'success': False, 'error': "No maintainers found in the database."}), 500
             manutentore = random.choice(manutentori)
             cf_man = manutentore['cf_man']
 
@@ -659,10 +659,10 @@ def avvia_manutenzione(id_eco):
 
             return jsonify({"success": True}), 200
         except Exception as e:
-            print(f"Errore durante l'avvio della manutenzione: {e}")
+            print(f"Error starting maintenance: {e}")
             return jsonify({"success": False, "error": str(e)}), 500
     else:
-        return jsonify({"success": False, "error": "Utente non autenticato"}), 401
+        return jsonify({"success": False, "error": "User not authenticated"}), 401
 
 # Route per la pagina delle comunicazioni
 @app.route('/comunicazioni', methods=['GET', 'POST'])
@@ -722,11 +722,11 @@ def create_communication(id_ente, azione, data_str, materiale):
 
         # Costruisci il messaggio
         if azione == 'manutenzione':
-            message = f"PASSERA' IL GIORNO {data_str} UN NOSTRO INCARICATO PER LA MANUTENZIONE."
+            message = f"ONE OF OUR MAINTENANCE STAFF WILL COME BY THE DAY {data_str}."
         elif azione == 'ritiro':
-            message = f"IL GIORNO {data_str} SI EFFETTUA IL RITIRO DEL/LA {materiale.upper()}."
+            message = f"ON {data_str} THE {materiale.upper()} WILL BE COLLECTED."
 
-        print(f"Comunicazione da inserire: Codice: {new_code}, Ente: {id_ente}, Data: {data_str}, Messaggio: {message}")
+        print(f"Communication to be inserted: Code: {new_code}, Entity: {id_ente}, Date: {data_str}, Message: {message}")
 
         # Crea il documento per la comunicazione
         communication_data = {
@@ -741,12 +741,12 @@ def create_communication(id_ente, azione, data_str, materiale):
 
         # Verifica se l'inserimento ha avuto successo
         if result.acknowledged:
-            print(f"Comunicazione inserita con successo: {communication_data}")
+            print(f"Message successfully inserted: {communication_data}")
         else:
-            print("Errore durante l'inserimento della comunicazione.")
+            print("Error while entering communication.")
 
     except Exception as e:
-        print(f"Errore durante la creazione della comunicazione: {e}")
+        print(f"Error creating communication: {e}")
 
 # Route per la pagina dell'archivio
 @app.route('/archivio')

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <title>ECOSIN - Archivio Manutenzioni</title>
+    <title>ECOSIN - Maintenance Archive</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="../assets/css/main.css" />
@@ -135,15 +135,15 @@
     <button type="submit" class="logout-button">Logout</button>
 </form>
 <!-- Contenitore principale del contenuto -->
-<h1>Archivio Manutenzioni</h1>
+<h1>Maintenance Archive</h1>
 
 <table>
     <thead>
     <tr>
-        <th>Codice Manutenzione</th>
-        <th>Data</th>
-        <th>Responsabile</th>
-        <th>Ente</th>
+        <th>Maintenance Code</th>
+        <th>Date</th>
+        <th>Responsible</th>
+        <th>Entity</th>
     </tr>
     </thead>
     <tbody>
@@ -156,7 +156,7 @@
     </tr>
     {% else %}
     <tr>
-        <td colspan="4">Nessuna manutenzione disponibile.</td>
+        <td colspan="4">No maintenance available.</td>
     </tr>
     {% endfor %}
     </tbody>

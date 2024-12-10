@@ -2,7 +2,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <title>Dettagli Dispositivo - {{ device.id_eco }}</title>
+    <title>Device Details - {{ device.id_eco }}</title>
     <link rel="stylesheet" href="../assets/css/main.css" />
     <noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
     <style>
@@ -147,26 +147,26 @@
 </form>
 <!-- Contenitore principale -->
 <div class="container">
-    <h1>Dettagli Dispositivo: {{ device.id_eco }}</h1>
+    <h1>Device Details: {{ device.id_eco }}</h1>
 
     <!-- Informazioni sull'Ente -->
     <table>
         <thead>
         <tr>
-            <th colspan="2">Informazioni sull'Ente</th>
+            <th colspan="2">Information about the Entity</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td><b>Ente:</b></td>
+            <td><b>Entity:</b></td>
             <td>{{ ente.nome_d }}</td>
         </tr>
         <tr>
-            <td><b>Indirizzo:</b></td>
+            <td><b>Address:</b></td>
             <td>{{ ente.via }}</td>
         </tr>
         <tr>
-            <td><b>Email Responsabile:</b></td>
+            <td><b>Manager email:</b></td>
             <td>{{ ente.email_dir }}</td>
         </tr>
         </tbody>
@@ -176,7 +176,7 @@
     <table>
         <thead>
         <tr>
-            <th colspan="3">Stato Bidone</th>
+            <th colspan="3">State of the bin</th>
         </tr>
         </thead>
         <tbody id="stato-bidone">
@@ -188,7 +188,7 @@
     <table>
         <thead>
         <tr>
-            <th colspan="3">Stato Scatola</th>
+            <th colspan="3">Box status</th>
         </tr>
         </thead>
         <tbody id="stato-scatola">
@@ -200,21 +200,21 @@
     <table>
         <thead>
         <tr>
-            <th colspan="2">Manutenzione</th>
+            <th colspan="2">Maintenance</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td><b>Ultima Manutenzione:</b></td>
+            <td><b>Last Maintenance:</b></td>
             <td>{{ ultima_manutenzione.data_man if ultima_manutenzione else 'Non disponibile' }}</td>
         </tr>
         <tr>
-            <td><b>Prossima Manutenzione (prevista tra 30 giorni):</b></td>
+            <td><b>Next Maintenance (expected in 30 days):</b></td>
             <td>{{ prossima_manutenzione }}</td>
         </tr>
         <tr>
             <td colspan="2">
-                <button onclick="manutenzione('{{ device.id_eco }}')">Avvia Manutenzione</button>
+                <button onclick="manutenzione('{{ device.id_eco }}')">Start Maintenance</button>
             </td>
         </tr>
         </tbody>
@@ -229,7 +229,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    console.error('Dispositivo non trovato');
+                    console.error('Device not found');
                     return;
                 }
 
@@ -237,19 +237,19 @@
                 const bidoneElement = document.getElementById('stato-bidone');
                 bidoneElement.innerHTML = `
                 <tr>
-                    <td><b>Plastica:</b></td>
+                    <td><b>Plastic:</b></td>
                     <td>${data.plastica_bidone}%</td>
-                    <td><button onclick="sminuzza('plastica', '{{ device.id_eco }}')" class="${data.plastica_bidone >= 80 ? 'enabled-action' : 'disabled-action'}" ${data.plastica_bidone < 80 ? 'disabled' : ''}>Sminuzza</button></td>
+                    <td><button onclick="sminuzza('plastic', '{{ device.id_eco }}')" class="${data.plastica_bidone >= 80 ? 'enabled-action' : 'disabled-action'}" ${data.plastica_bidone < 80 ? 'disabled' : ''}>Chop up</button></td>
                 </tr>
                 <tr>
-                    <td><b>Vetro:</b></td>
+                    <td><b>Glass:</b></td>
                     <td>${data.vetro_bidone}%</td>
-                    <td><button onclick="sminuzza('vetro', '{{ device.id_eco }}')" class="${data.vetro_bidone >= 80 ? 'enabled-action' : 'disabled-action'}" ${data.vetro_bidone < 80 ? 'disabled' : ''}>Sminuzza</button></td>
+                    <td><button onclick="sminuzza('glass', '{{ device.id_eco }}')" class="${data.vetro_bidone >= 80 ? 'enabled-action' : 'disabled-action'}" ${data.vetro_bidone < 80 ? 'disabled' : ''}>Chop up</button></td>
                 </tr>
                 <tr>
-                    <td><b>Carta:</b></td>
+                    <td><b>Paper:</b></td>
                     <td>${data.carta_bidone}%</td>
-                    <td><button onclick="sminuzza('carta', '{{ device.id_eco }}')" class="${data.carta_bidone >= 80 ? 'enabled-action' : 'disabled-action'}" ${data.carta_bidone < 80 ? 'disabled' : ''}>Sminuzza</button></td>
+                    <td><button onclick="sminuzza('paper', '{{ device.id_eco }}')" class="${data.carta_bidone >= 80 ? 'enabled-action' : 'disabled-action'}" ${data.carta_bidone < 80 ? 'disabled' : ''}>Chop up</button></td>
                 </tr>
             `;
 
@@ -257,23 +257,23 @@
                 const scatolaElement = document.getElementById('stato-scatola');
                 scatolaElement.innerHTML = `
                 <tr>
-                    <td><b>Plastica:</b></td>
+                    <td><b>Plastic:</b></td>
                     <td>${data.plastica_scatola}%</td>
-                    <td><button onclick="avviaRitiro('plastica', '{{ device.id_eco }}')" class="${data.plastica_scatola >= 90 ? 'enabled-action' : 'disabled-action'}" ${data.plastica_scatola < 90 ? 'disabled' : ''}>Avvia Ritiro</button></td>
+                    <td><button onclick="avviaRitiro('plastic', '{{ device.id_eco }}')" class="${data.plastica_scatola >= 90 ? 'enabled-action' : 'disabled-action'}" ${data.plastica_scatola < 90 ? 'disabled' : ''}>Start withdrawal</button></td>
                 </tr>
                 <tr>
-                    <td><b>Vetro:</b></td>
+                    <td><b>Glass:</b></td>
                     <td>${data.vetro_scatola}%</td>
-                    <td><button onclick="avviaRitiro('vetro', '{{ device.id_eco }}')" class="${data.vetro_scatola >= 90 ? 'enabled-action' : 'disabled-action'}" ${data.vetro_scatola < 90 ? 'disabled' : ''}>Avvia Ritiro</button></td>
+                    <td><button onclick="avviaRitiro('glass', '{{ device.id_eco }}')" class="${data.vetro_scatola >= 90 ? 'enabled-action' : 'disabled-action'}" ${data.vetro_scatola < 90 ? 'disabled' : ''}>Start withdrawal</button></td>
                 </tr>
                 <tr>
-                    <td><b>Carta:</b></td>
+                    <td><b>Paper:</b></td>
                     <td>${data.carta_scatola}%</td>
-                    <td><button onclick="avviaRitiro('carta', '{{ device.id_eco }}')" class="${data.carta_scatola >= 90 ? 'enabled-action' : 'disabled-action'}" ${data.carta_scatola < 90 ? 'disabled' : ''}>Avvia Ritiro</button></td>
+                    <td><button onclick="avviaRitiro('paper', '{{ device.id_eco }}')" class="${data.carta_scatola >= 90 ? 'enabled-action' : 'disabled-action'}" ${data.carta_scatola < 90 ? 'disabled' : ''}>Start withdrawal</button></td>
                 </tr>
             `;
             })
-            .catch(error => console.error('Errore durante il caricamento delle percentuali:', error));
+            .catch(error => console.error('Error loading percentages:', error));
     }
 
     // Funzione per il bottone "Sminuzza"
@@ -285,10 +285,10 @@
         })
             .then(response => response.json())
             .then(data => {
-                alert(`Sminuzzamento completato per ${tipo}`);
+                alert(`Shredding completed for ${tipo}`);
                 aggiornaPercentuali();
             })
-            .catch(error => console.error('Errore durante lo sminuzzamento:', error));
+            .catch(error => console.error('Error while shredding:', error));
     }
 
     // Funzione per il bottone "Avvia Ritiro"
@@ -301,13 +301,13 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert(`Ritiro avviato con successo per ${tipo}!`);
+                    alert(`Withdrawal successfully initiated for ${tipo}!`);
                     aggiornaPercentuali();
                 } else {
-                    alert(`Errore: ${data.error}`);
+                    alert(`Error: ${data.error}`);
                 }
             })
-            .catch(error => console.error('Errore durante il ritiro:', error));
+            .catch(error => console.error('Error during withdrawal:', error));
     }
 
 
@@ -324,14 +324,14 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert("Manutenzione avviata con successo!");
+                    alert("Maintenance started successfully!");
                 } else {
-                    alert("Errore durante l'avvio della manutenzione: " + data.error);
+                    alert("Error starting maintenance: " + data.error);
                 }
             })
             .catch(error => {
-                console.error('Errore durante la manutenzione:', error);
-                alert("Si è verificato un errore durante la manutenzione.");
+                console.error('Error during maintenance:', error);
+                alert("An error occurred during maintenance.");
             });
     }
 </script>
