@@ -4,22 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="deca04d5-6c1e-4270-8bc4-5127a87cde4e" name="Changes" comment="licenze">
+    <list default="true" id="deca04d5-6c1e-4270-8bc4-5127a87cde4e" name="Changes" comment="ECOSIN">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/eco.py" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/eco.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/archive.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/archive.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/communications.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/communications.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/communications_archive.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/communications_archive.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/maintenance.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/maintenance.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/maintenance_archive.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/maintenance_archive.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/maintenance_todo.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/maintenance_todo.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/map.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/map.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/portal.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/portal.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/product.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/product.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/withdrawals_archive.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/withdrawals_archive.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ECOSIN/templates/withdrawals_todo.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/templates/withdrawals_todo.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/static/PRODUCT.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/static/PRODUCT.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECOSIN/static/composition.html" beforeDir="false" afterPath="$PROJECT_DIR$/ECOSIN/static/composition.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,7 +135,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-WS-243.21565.180" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.112" />
       </set>
     </attachedChunks>
   </component>
@@ -195,7 +184,9 @@
       <workItem from="1733581022779" duration="1202000" />
       <workItem from="1733751586152" duration="580000" />
       <workItem from="1733756120766" duration="76000" />
-      <workItem from="1733843432766" duration="7955000" />
+      <workItem from="1733843432766" duration="8049000" />
+      <workItem from="1733908003227" duration="3000" />
+      <workItem from="1734354869409" duration="734000" />
     </task>
     <task id="LOCAL-00001" summary="test1">
       <option name="closed" value="true" />
@@ -397,7 +388,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733844702598</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="ECOSIN">
+      <option name="closed" value="true" />
+      <created>1733852373624</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1733852373624</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -438,8 +437,8 @@
     <MESSAGE value="portal" />
     <MESSAGE value="modifiche generali" />
     <MESSAGE value="modifiche del portale di spiegazione" />
-    <MESSAGE value="ECOSIN" />
     <MESSAGE value="licenze" />
-    <option name="LAST_COMMIT_MESSAGE" value="licenze" />
+    <MESSAGE value="ECOSIN" />
+    <option name="LAST_COMMIT_MESSAGE" value="ECOSIN" />
   </component>
 </project>
